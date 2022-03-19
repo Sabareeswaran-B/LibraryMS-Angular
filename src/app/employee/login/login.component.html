@@ -1,0 +1,32 @@
+<!-- <div class="container-fluid"> -->
+<main class="form-signin shadow-lg">
+    <form [formGroup]="loginForm">
+        <h1 class="h3 mb-4 fw-normal">Please sign in</h1>
+        <div class="p-field mb-4">
+            <span class="p-float-label">
+                <input type="email" id="employeeEmail" pInputText class="w-100" formControlName="employeeEmail">
+                <label for="employeeEmail">Employee Email</label>
+            </span>
+        </div>
+
+        <div class="p-field mb-5 p-float-label">
+            <span class="p-inputgroup">
+                <input [type]="encryptPassword ? 'password' : 'text'" placeholder="Password" id="employeePassword"
+                    pInputText class="w-100" formControlName="employeePassword">
+                <button type="button" (click)="passwordShow()" pButton pRipple
+                    [icon]='encryptPassword ? "pi pi-eye" : "pi pi-eye-slash"' styleClass="p-button-warn"></button>
+            </span>
+        </div>
+
+        <button class="w-100 p-2 p-button-raised" *ngIf="!isLoading;else loader" pButton pRipple (click)="login()"
+            title="Signin" type="button" label="Create"></button>
+
+        <!-- <a routerLink="/signup" style="float: right;">New User?</a> -->
+        <ng-template #loader>
+            <button class="w-100 p-2 p-button-raised" pButton pRipple type="button" [disabled]="true">
+                <i class="pi pi-spin pi-spinner"></i>
+            </button>
+        </ng-template>
+    </form>
+</main>
+<!-- </div> -->

@@ -1,0 +1,64 @@
+<main class="form-signup shadow-lg">
+    <form [formGroup]="addNewEmployeeForm">
+
+        <h1 class="h3 mb-5 fw-normal">Create a new employee</h1>
+
+        <div class="p-field mb-4">
+            <span class="p-float-label">
+                <input type="text" id="EmployeeName" pInputText class="w-100" formControlName="EmployeeName">
+                <label for="EmployeeName">Employee Name</label>
+            </span>
+        </div>
+
+        <div class="p-field mb-4">
+            <span class="p-float-label w-100">
+                <p-inputNumber inputId="EmployeeAge" class="w-100"></p-inputNumber>
+                <label for="EmployeeAge">Employee Age</label>
+            </span>
+        </div>
+
+        <div class="p-field mb-4">
+            <span class="p-float-label w-100">
+                <p-inputNumber inputId="EmployeeSalary" class="w-100"></p-inputNumber>
+                <label for="EmployeeSalary">Employee Salary</label>
+            </span>
+        </div>
+
+        <div class="p-field mb-4">
+            <span class="p-float-label">
+                <input type="email" id="EmployeeEmail" pInputText class="w-100" formControlName="EmployeeEmail">
+                <label for="EmployeeEmail">Employee Email</label>
+            </span>
+        </div>
+
+        <div class="p-field mb-4">
+            <span class="p-float-label">
+                <input type="tel" id="EmployeePhoneNo" pInputText class="w-100" formControlName="EmployeePhoneNo">
+                <label for="EmployeePhoneNo">Employee PhoneNo</label>
+            </span>
+        </div>
+
+        <div class="p-field mb-5 p-float-label">
+            <span class="p-inputgroup">
+                <input [type]="encryptPassword ? 'password' : 'text'" placeholder="Password" id="EmployeePassword" pInputText class="w-100" formControlName="EmployeePassword">
+                <!-- <label for="EmployeePassword">Password</label> -->
+                <button type="button" (click)="passwordShow()" pButton pRipple [icon]='encryptPassword ? "pi pi-eye" : "pi pi-eye-slash"' styleClass="p-button-warn"></button>
+            </span>
+        </div>
+
+        <button class="w-100 p-2 p-button-raised" *ngIf="!isLoading;else loader" pButton pRipple 
+        (click)="register()" title="Signin" type="button" label="Create"></button>
+
+        <!-- <button class="w-100 p-3" *ngIf="!isLoading;else loader" kendoButton themeColor="primary" kendoTooltip
+            (click)="register()" title="Signin" type="submit">Create</button> -->
+        <!-- <a routerLink="/login" style="float: right;">Already an user?</a> -->
+
+        <ng-template #loader>
+            <button class="w-100 p-3" kendoButton type="button" themeColor="primary" [disabled]="true">
+                <kendo-loader size="medium" themeColor="light">
+                </kendo-loader>
+            </button>
+        </ng-template>
+
+    </form>
+</main>

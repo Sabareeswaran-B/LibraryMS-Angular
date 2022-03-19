@@ -1,0 +1,26 @@
+@import "../node_modules/primeicons/primeicons.css";
+
+@import "../node_modules/primeng/resources/themes/saga-blue/theme.css";
+
+@import "../node_modules/primeng/resources/primeng.min.css";
+
+a {
+    text-decoration: none;
+}
+
+html,
+body {
+    height: 100%;
+    width: 100%;
+}
+
+/* body { */
+    /* display: grid; */
+    /* align-items: center; */
+    /* background-color: #f5f5f5; */
+/* } */
+
+
+p-inputnumber, .p-inputnumber, p-calendar, .p-calendar, p-password, .p-password, .p-password-input, .p-inputtext {
+    width: 100%
+}

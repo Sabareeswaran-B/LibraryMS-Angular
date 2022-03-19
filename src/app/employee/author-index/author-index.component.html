@@ -1,0 +1,49 @@
+<kendo-grid [kendoGridBinding]="authorsGridView" kendoGridSelectBy="id" [(selectedKeys)]="selectedList" [pageSize]="20"
+    [pageable]="true" [sortable]="true" [groupable]="true" [reorderable]="true" [resizable]="true" [height]="650" 
+    [columnMenu]="{ filter: true }">
+
+    <ng-template kendoGridToolbarTemplate>
+
+        <input [style.width.px]="165" placeholder="Search in all columns..." kendoTextBox
+            (input)="onFilter($event)" />
+
+        <kendo-grid-spacer></kendo-grid-spacer>
+
+        <button kendoGridExcelCommand type="button" icon="file-excel">
+            Export to Excel
+        </button>
+
+        <!-- <button kendoGridPDFCommand icon="file-pdf">Export to PDF</button> -->
+    </ng-template>
+
+    <kendo-grid-checkbox-column [width]="45" [headerClass]="{ 'text-center': true }" [class]="{ 'text-center': true }"
+        [resizable]="false" [columnMenu]="false" [showSelectAll]="true"></kendo-grid-checkbox-column>
+
+    <kendo-grid-column-group title="Authors" [columnMenu]="false">
+
+        <kendo-grid-column field="authorId" title="Id" [width]="220">
+            <!-- <ng-template kendoGridCellTemplate let-dataItem>
+                <div class="customer-photo" [ngStyle]="{ 'background-image': photoURL(dataItem) }"></div>
+                <div class="customer-name">{{ dataItem.full_name }}</div>
+            </ng-template> -->
+        </kendo-grid-column>
+        
+        <kendo-grid-column field="authorName" title="Name" [width]="220">
+        </kendo-grid-column>
+
+        <kendo-grid-column field="authorAge" title="Age" [width]="100" [class]="{ 'text-center': true }"
+            [resizable]="false">
+            <!-- <ng-template kendoGridCellTemplate let-dataItem>
+                <img class="flag" [src]="flagURL(dataItem)" width="30" />
+            </ng-template> -->
+        </kendo-grid-column>
+
+        <kendo-grid-column field="primaryLanguage" title="Primary Language" [width]="100" [class]="{ 'text-center': true }"
+            [resizable]="false">
+        </kendo-grid-column>
+
+    </kendo-grid-column-group>
+
+    <kendo-grid-pdf fileName="Employees.pdf" [repeatHeaders]="true"></kendo-grid-pdf>
+    <kendo-grid-excel fileName="Employees.xlsx"></kendo-grid-excel>
+</kendo-grid>

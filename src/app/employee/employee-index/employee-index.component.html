@@ -1,1 +1,191 @@
-<p>employee-index works!</p>
+<kendo-grid [kendoGridBinding]="employeesGridView" kendoGridSelectBy="employeeId" [(selectedKeys)]="selectedList"
+    [pageSize]="20" [pageable]="true" [sortable]="true" [groupable]="true" [reorderable]="true" [resizable]="true"
+    [height]="650" [columnMenu]="{ filter: true }" class="shadow m-3" style="border-radius: 20px">
+
+    <ng-template kendoGridToolbarTemplate>
+
+        <input class="w-25" placeholder="Search in all columns..." pInputText (input)="onFilter($event)" />
+
+        <kendo-grid-spacer></kendo-grid-spacer>
+
+        <button kendoGridExcelCommand type="button" icon="file-excel" pButton pRipple class="btn p-button-raised"
+            style="width: 15%;">
+            Export to Excel
+        </button>
+
+        <button kendoButton type="button" icon="add" pButton pRipple class="btn p-button-raised" style="width: 15%;"
+            (click)="showCreateDialog()">
+            Add a new employee
+        </button>
+
+        <!-- <button kendoGridPDFCommand icon="file-pdf">Export to PDF</button> -->
+    </ng-template>
+
+    <kendo-grid-checkbox-column [width]="45" [headerClass]="{ 'text-center': true }" [class]="{ 'text-center': true }"
+        [resizable]="false" [columnMenu]="false" [showSelectAll]="true"></kendo-grid-checkbox-column>
+
+    <kendo-grid-column-group title="employees" [columnMenu]="false">
+
+        <!-- <kendo-grid-column field="employeeId" title="Id" [width]="220">
+        </kendo-grid-column> -->
+
+        <kendo-grid-column field="employeeName" title="Name" [width]="220">
+        </kendo-grid-column>
+        <kendo-grid-column field="employeeRole" title="Role" [width]="220">
+            <ng-template kendoGridCellTemplate let-dataItem>
+                <div *ngIf="dataItem.employeeRole == 0;else employee">Admin</div>
+            </ng-template>
+            <<ng-template #employee><div>Employee</div></ng-template>
+        </kendo-grid-column>
+
+        <kendo-grid-column field="employeeEmail" title="Email" [width]="220">
+        </kendo-grid-column>
+
+        <kendo-grid-column field="employeePhoneNo" title="Mobile Number" [width]="220">
+        </kendo-grid-column>
+
+        <kendo-grid-column field="employeeAge" title="Age" [width]="100" [class]="{ 'text-center': true }"
+            [resizable]="false">
+        </kendo-grid-column>
+
+        <kendo-grid-column field="employeeId" title="" [width]="100" [class]="{ 'text-center': true }" [sortable]="false"
+            [groupable]="false" [reorderable]="false" [resizable]="false">
+            <ng-template kendoGridCellTemplate let-dataItem>
+                <button type="button" kendoButton icon="pencil" themeColor="primary" class="m-1 w-75"
+                    (click)="showUpdateDialog(dataItem.employeeId, dataItem)">Edit</button>
+                <button type="button" kendoButton icon="delete" themeColor="error" class="m-1 w-75"
+                    (click)="deleteemployee(dataItem.employeeId)">Delete</button>
+            </ng-template>
+        </kendo-grid-column>
+
+    </kendo-grid-column-group>
+
+    <kendo-grid-pdf fileName="Employees.pdf" [repeatHeaders]="true"></kendo-grid-pdf>
+    <kendo-grid-excel fileName="Employees.xlsx"></kendo-grid-excel>
+</kendo-grid>
+
+
+<!-- Edit Modal -->
+<p-dialog header="Update employee" [(visible)]="displayUpdateModal" [breakpoints]="{'960px': '75vw'}"
+    [style]="{width: '50vw'}" [draggable]="false" [resizable]="false">
+
+    <form [formGroup]="updateEmployeeForm">
+
+        <!-- <div class="p-field my-4">
+            <span class="p-float-label">
+                <input type="text" id="employeeId" pInputText class="w-100" formControlName="employeeId" [disabled]="true">
+                <label for="employeeId">employee Id</label>
+            </span>
+        </div> -->
+
+        <div class="p-field mb-4">
+            <span class="p-float-label">
+                <input type="text" id="employeeName" pInputText class="w-100" formControlName="employeeName">
+                <label for="employeeName">employee Name</label>
+            </span>
+        </div>
+
+        <div class="p-field mb-4">
+            <span class="p-float-label">
+                <input type="number" id="employeeAge" pInputText class="w-100" formControlName="employeeAge">
+                <label for="employeeAge">employee Age</label>
+            </span>
+        </div>
+
+        <div class="p-field mb-4">
+            <span class="p-float-label">
+                <input type="number" id="employeeRole" pInputText class="w-100" formControlName="employeeRole">
+                <label for="employeeRole">employee Role</label>
+            </span>
+        </div>
+        <div class="p-field mb-4">
+            <span class="p-float-label">
+                <input type="email" id="employeeEmail" pInputText class="w-100" formControlName="employeeEmail">
+                <label for="employeeEmail">employee Email</label>
+            </span>
+        </div>
+        <div class="p-field mb-4">
+            <span class="p-float-label">
+                <input type="tel" id="employeePhoneNo" pInputText class="w-100" formControlName="employeePhoneNo">
+                <label for="employeePhoneNo">employee Phone Number</label>
+            </span>
+        </div>
+
+        <div class="p-field mb-4">
+            <span class="p-inputgroup">
+                <input [type]="encryptPassword ? 'password' : 'text'" placeholder="Password" id="password"
+                    pInputText class="w-100" formControlName="password">
+                <button type="button" (click)="passwordShow()" pButton pRipple
+                    [icon]='encryptPassword ? "pi pi-eye" : "pi pi-eye-slash"' styleClass="p-button-warn"></button>
+            </span>
+        </div>
+
+    </form>
+
+    <ng-template pTemplate="footer">
+        <p-button (click)="updateEmployee()" *ngIf="!updating;else loader" label="Update" styleClass="p-button-text">
+        </p-button>
+        <ng-template #loader>
+            <p-button [disabled]="true" styleClass="p-button-text"><i class="pi pi-spin pi-spinner"></i></p-button>
+        </ng-template>
+    </ng-template>
+
+</p-dialog>
+
+<!-- Add new Modal -->
+<p-dialog header="Create employee" [(visible)]="displayCreateModal" [breakpoints]="{'960px': '75vw'}"
+    [style]="{width: '50vw'}" [draggable]="false" [resizable]="false">
+
+    <form [formGroup]="addNewEmployeeForm">
+        <div class="p-field my-4">
+            <span class="p-float-label">
+                <input type="text" id="employeeName" pInputText class="w-100" formControlName="employeeName">
+                <label for="employeeName">employee Name</label>
+            </span>
+        </div>
+
+        <div class="p-field mb-4">
+            <span class="p-float-label">
+                <input type="number" id="employeeAge" pInputText class="w-100" formControlName="employeeAge">
+                <label for="employeeAge">employee Age</label>
+            </span>
+        </div>
+        <div class="p-field mb-4">
+            <span class="p-float-label">
+                <input type="number" id="employeeRole" pInputText class="w-100" formControlName="employeeRole">
+                <label for="employeeRole">employee Role</label>
+            </span>
+        </div>
+        <div class="p-field mb-4">
+            <span class="p-float-label">
+                <input type="email" id="employeeEmail" pInputText class="w-100" formControlName="employeeEmail">
+                <label for="employeeEmail">employee Email</label>
+            </span>
+        </div>
+        <div class="p-field mb-4">
+            <span class="p-float-label">
+                <input type="tel" id="employeePhoneNo" pInputText class="w-100" formControlName="employeePhoneNo">
+                <label for="employeePhoneNo">employee Phone Number</label>
+            </span>
+        </div>
+
+        <div class="p-field mb-4">
+            <span class="p-inputgroup">
+                <input [type]="encryptPassword ? 'password' : 'text'" placeholder="Password" id="password"
+                    pInputText class="w-100" formControlName="password">
+                <button type="button" (click)="passwordShow()" pButton pRipple
+                    [icon]='encryptPassword ? "pi pi-eye" : "pi pi-eye-slash"' styleClass="p-button-warn"></button>
+            </span>
+        </div>
+
+    </form>
+
+    <ng-template pTemplate="footer">
+        <p-button (click)="addNewEmployee()" *ngIf="!adding;else loader" label="Create" styleClass="p-button-text">
+        </p-button>
+        <ng-template #loader>
+            <p-button [disabled]="true" styleClass="p-button-text"><i class="pi pi-spin pi-spinner"></i></p-button>
+        </ng-template>
+    </ng-template>
+
+</p-dialog>

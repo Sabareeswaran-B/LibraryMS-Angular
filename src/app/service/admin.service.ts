@@ -101,27 +101,36 @@ export class AdminService {
 
     //Get all employee in the database
     getAllEmployees() {
-        return this.httpClient.get(`${env.baseUrl}/employee/getallemployees`);
+        return this.httpClient.get(`${env.baseUrl}/employee/getallemployees`, { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } });
     }
 
     //Get a single employee by his id
     getEmployeeByID(id: string) {
-        return this.httpClient.get(`${env.baseUrl}/employee/getemployeebyid/${id}`);
+        return this.httpClient.get(`${env.baseUrl}/employee/getemployeebyid/${id}`, { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } });
     }
 
     //Add a new employee to the database
     addNewEmployee(employee: Employee) {
-        return this.httpClient.post(`${env.baseUrl}/employee/addnewemployee`, employee);
+        return this.httpClient.post(`${env.baseUrl}/employee/addnewemployee`,
+            {
+                employeeName: employee.employeeName,
+                employeeRole: employee.employeeRole,
+                employeeAge: employee.employeeAge,
+                employeeSalary: employee.employeeSalary,
+                employeeEmail: employee.employeeEmail,
+                employeePhoneNo: employee.employeePhoneNo,
+                password: employee.password,
+            }, { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } });
     }
 
     //Update the employee info which is already exist in the database
     updateExistingEmployee(id: string, employee: Employee) {
-        return this.httpClient.post(`${env.baseUrl}/employee/updateexistingemployee/${id}`, employee);
+        return this.httpClient.put(`${env.baseUrl}/employee/updateexistingemployee/${id}`, employee, { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } });
     }
 
     //delete the employee from the database
     deleteEmployee(id: string) {
-        return this.httpClient.delete(`${env.baseUrl}/employee/deleteemployee/${id}`);
+        return this.httpClient.delete(`${env.baseUrl}/employee/deleteemployee/${id}`, { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } });
     }
 
 }

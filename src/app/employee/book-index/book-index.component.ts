@@ -1,4 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Book } from 'src/app/model/book.model';
+import { AdminService } from 'src/app/service/admin.service';
+import { process } from "@progress/kendo-data-query";
+import { Author } from 'src/app/model/author.model';
+
 
 @Component({
   selector: 'app-book-index',
@@ -6,10 +12,180 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./book-index.component.css']
 })
 export class BookIndexComponent implements OnInit {
+  authors: Author[] = [];
+  books: Book[] = [];
+  booksGridView: any[] = [];
+  selectedId!: string;
+  updateBookForm!: FormGroup;
+  addNewBookForm!: FormGroup
+  updating: boolean = false;
+  adding: boolean = false;
+  selectedAuthor!: Author;
 
-  constructor() { }
+  public selectedList: string[] = [];
+  constructor(private adminService: AdminService, private formBuilder: FormBuilder,) { }
 
   ngOnInit(): void {
+    this.updateBookForm = this.formBuilder.group({
+      bookId: [''],
+      bookName: ['', Validators.required],
+      authorId: ['', Validators.required],
+      language: ['', Validators.required],
+      releasedYear: ['', Validators.required],
+      edition: ['', Validators.required],
+      copiesAvailable: ['', Validators.required],
+    });
+
+    this.addNewBookForm = this.formBuilder.group({
+      bookName: ['', Validators.required],
+      authorId: ['', Validators.required],
+      language: ['', Validators.required],
+      releasedYear: ['', Validators.required],
+      edition: ['', Validators.required],
+      copiesAvailable: ['', Validators.required],
+    });
+
+    this.getAllBooks();
+  }
+
+  getAllBooks() {
+    this.adminService.getAllBooks().subscribe({
+      next: (data) => {
+        this.books = data['data' as keyof object] as Book[];
+        this.booksGridView = this.books;       
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    });
+  }
+
+  getAllAuthors() {
+    this.adminService.getAllAuthors().subscribe({
+      next: (data) => {
+        this.authors = data['data' as keyof object] as Author[];       
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    });
+  }
+
+  public onFilter(event: Event): void {
+    this.booksGridView = process(this.books, {
+      filter: {
+        logic: "or",
+        filters: [
+          {
+            field: "bookId",
+            operator: "contains",
+            value: (event.target as HTMLInputElement).value,
+          },
+          {
+            field: "bookName",
+            operator: "contains",
+            value: (event.target as HTMLInputElement).value,
+          },
+          {
+            field: "author.authorName",
+            operator: "contains",
+            value: (event.target as HTMLInputElement).value,
+          },
+          {
+            field: "language",
+            operator: "contains",
+            value: (event.target as HTMLInputElement).value,
+          },
+          {
+            field: "edition",
+            operator: "contains",
+            value: (event.target as HTMLInputElement).value,
+          },
+          {
+            field: "copiesAvailable",
+            operator: "contains",
+            value: (event.target as HTMLInputElement).value,
+          },
+        ],
+      },
+    }).data;
+  }
+
+  displayUpdateModal: boolean = false;
+  displayCreateModal: boolean = false;
+
+  showUpdateDialog(book: Book) {
+    if(this.authors.length <= 0)
+      this.getAllAuthors();
+    this.displayUpdateModal = true;
+    this.selectedId = book.bookId;
+    this.updateBookForm.setValue({
+      'bookId': book.bookId,
+      'authorId': book.author,
+      'bookName': book.bookName,
+      'edition': book.edition,
+      'language': book.language,
+      'copiesAvailable': book.copiesAvailable,
+      'releasedYear': book.releasedYear
+    })
+  }
+  showCreateDialog() {
+    if(this.authors.length <= 0)
+      this.getAllAuthors();
+    this.displayCreateModal = true;
+  }
+
+  updateBook() {
+    let _updatedBook = this.updateBookForm.value;
+    _updatedBook.authorId = _updatedBook.authorId.authorId;
+    this.updating = true;
+    this.adminService.updateExistingBook(this.selectedId, _updatedBook).subscribe({
+      next: (data) => {
+        console.log(data);
+        this.updating = false;
+        this.displayUpdateModal = false;
+        this.updateBookForm.reset();
+        this.getAllBooks();
+      },
+      error: (err) => {
+        console.log(err);
+        this.updating = false;
+        this.displayUpdateModal = false;
+      }
+    })
+  }
+
+  addNewBook() {
+    let _newBook = this.addNewBookForm.value;
+    _newBook.authorId = _newBook.authorId.authorId;
+    console.log(_newBook);
+    this.adding = true;
+    this.adminService.addNewBook(_newBook).subscribe({
+      next: (data) => {
+        console.log(data);
+        this.adding = false;
+        this.displayCreateModal = false;
+        this.addNewBookForm.reset();
+        this.getAllBooks();
+      },
+      error: (err) => {
+        console.log(err);
+        this.adding = false;
+        this.displayCreateModal = false;
+      }
+    })
+  }
+
+  deleteBook(id: string) {
+    this.adminService.deleteBook(id).subscribe({
+      next: (data) => {
+        console.log(data);
+        this.getAllBooks();
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    })
   }
 
 }

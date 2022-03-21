@@ -10,28 +10,21 @@ import { InputTextModule } from "primeng/inputtext";
 import { InputNumberModule } from "primeng/inputnumber";
 import { CalendarModule } from "primeng/calendar";
 import { DateInputsModule } from '@progress/kendo-angular-dateinputs';
-import { GridModule } from '@progress/kendo-angular-grid';
+import { GridModule,ExcelModule } from '@progress/kendo-angular-grid';
 import { PasswordModule } from "primeng/password";
-import { HomeAdminComponent } from './home-admin/home.admin.component';
+import { HomeAdminComponent } from './home.admin/home.admin.component';
 import { BookIndexComponent } from './book-index/book-index.component';
-import { BookAddComponent } from './book-add/book-add.component';
-import { BookEditComponent } from './book-edit/book-edit.component';
 import { AuthorIndexComponent } from './author-index/author-index.component';
-import { AuthorAddComponent } from './author-add/author-add.component';
-import { AuthorEditComponent } from './author-edit/author-edit.component';
 import { SideNavAdminComponent } from './side-nav.admin/side-nav.admin.component';
 import { HeaderComponent } from './header/header.component';
 import { SideNavEmployeeComponent } from './side-nav.employee/side-nav.employee.component';
 import { VisitorIndexComponent } from './visitor-index/visitor-index.component';
-import { VisitorAddComponent } from './visitor-add/visitor-add.component';
-import { VisitorEditComponent } from './visitor-edit/visitor-edit.component';
 import { HomeEmployeeComponent } from './home.employee/home.employee.component';
 import { EmployeeIndexComponent } from './employee-index/employee-index.component';
-import { EmployeeAddComponent } from './employee-add/employee-add.component';
-import { EmployeeEditComponent } from './employee-edit/employee-edit.component';
 import { LendingIndexComponent } from './lending-index/lending-index.component';
-import { LendingAddComponent } from './lending-add/lending-add.component';
-import { LendingEditComponent } from './lending-edit/lending-edit.component';
+import { DialogModule } from 'primeng/dialog';
+import { DropdownModule } from 'primeng/dropdown';
+import { LayoutModule } from "@progress/kendo-angular-layout";
 
 
 
@@ -41,24 +34,14 @@ import { LendingEditComponent } from './lending-edit/lending-edit.component';
     AddNewEmployeeComponent,
     HomeAdminComponent,
     BookIndexComponent,
-    BookAddComponent,
-    BookEditComponent,
     AuthorIndexComponent,
-    AuthorAddComponent,
-    AuthorEditComponent,
     SideNavAdminComponent,
     HeaderComponent,
     SideNavEmployeeComponent,
     VisitorIndexComponent,
-    VisitorAddComponent,
-    VisitorEditComponent,
     HomeEmployeeComponent,
     EmployeeIndexComponent,
-    EmployeeAddComponent,
-    EmployeeEditComponent,
     LendingIndexComponent,
-    LendingAddComponent,
-    LendingEditComponent,
   ],
   imports: [
     FormsModule,
@@ -73,23 +56,21 @@ import { LendingEditComponent } from './lending-edit/lending-edit.component';
     CalendarModule,
     InputNumberModule,
     PasswordModule,
+    ExcelModule,
+    DialogModule,
+    LayoutModule,
+    DropdownModule,
   ],
   exports: [
     LoginComponent,
     AddNewEmployeeComponent,
     HomeAdminComponent,
     BookIndexComponent,
-    BookAddComponent,
-    BookEditComponent,
     AuthorIndexComponent,
-    AuthorAddComponent,
-    AuthorEditComponent,
     SideNavAdminComponent,
     HeaderComponent,
     SideNavEmployeeComponent,
     VisitorIndexComponent,
-    VisitorAddComponent,
-    VisitorEditComponent,
     HomeEmployeeComponent,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

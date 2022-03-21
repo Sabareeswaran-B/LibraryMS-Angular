@@ -1,1 +1,198 @@
-<p>book-index works!</p>
+<!-- <div class="container table-container shadow-lg"> -->
+    <kendo-grid [kendoGridBinding]="booksGridView" kendoGridSelectBy="bookId" [(selectedKeys)]="selectedList"
+        [pageSize]="20" [pageable]="true" [sortable]="true" [groupable]="true" [reorderable]="true" [resizable]="true"
+        [height]="650" [columnMenu]="{ filter: true }" class="shadow m-3" style="border-radius: 20px">
+
+        <ng-template kendoGridToolbarTemplate>
+
+            <input class="w-25" placeholder="Search in all columns..." pInputText (input)="onFilter($event)" />
+
+            <kendo-grid-spacer></kendo-grid-spacer>
+
+            <button kendoGridExcelCommand type="button" icon="file-excel" pButton pRipple class="btn p-button-raised"
+                style="width: 15%;">
+                Export to Excel
+            </button>
+
+            <button kendoButton type="button" icon="add" pButton pRipple class="btn p-button-raised" style="width: 15%;"
+                (click)="showCreateDialog()">
+                Add a new book
+            </button>
+
+            <!-- <button kendoGridPDFCommand icon="file-pdf">Export to PDF</button> -->
+        </ng-template>
+
+        <kendo-grid-checkbox-column [width]="45" [headerClass]="{ 'text-center': true }"
+            [class]="{ 'text-center': true }" [resizable]="false" [columnMenu]="false" [showSelectAll]="true">
+        </kendo-grid-checkbox-column>
+
+        <kendo-grid-column-group title="books" [columnMenu]="false">
+
+            <!-- <kendo-grid-column field="bookId" title="Id" [width]="220">
+        </kendo-grid-column> -->
+
+            <kendo-grid-column field="bookName" title="Name" [width]="220">
+            </kendo-grid-column>
+
+            <kendo-grid-column field="author.authorName" title="Author" [width]="100" [class]="{ 'text-center': true }"
+                [resizable]="false">
+            </kendo-grid-column>
+
+            <kendo-grid-column field="language" title="Language" [width]="100" [class]="{ 'text-center': true }">
+            </kendo-grid-column>
+            <kendo-grid-column field="releasedYear" title="Year of release" [width]="100"
+                [class]="{ 'text-center': true }">
+            </kendo-grid-column>
+            <kendo-grid-column field="edition" title="Edition" [width]="100" [class]="{ 'text-center': true }">
+            </kendo-grid-column>
+            <kendo-grid-column field="copiesAvailable" title="Stocks" [width]="100" [class]="{ 'text-center': true }">
+            </kendo-grid-column>
+
+            <kendo-grid-column field="bookId" title="" [width]="100" [class]="{ 'text-center': true }"
+                [sortable]="false" [groupable]="false" [reorderable]="false" [resizable]="false">
+                <ng-template kendoGridCellTemplate let-dataItem>
+                    <button type="button" kendoButton icon="pencil" themeColor="primary" class="m-1 w-75"
+                        (click)="showUpdateDialog(dataItem)">Edit</button>
+                    <button type="button" kendoButton icon="delete" themeColor="error" class="m-1 w-75"
+                        (click)="deleteBook(dataItem.bookId)">Delete</button>
+                </ng-template>
+            </kendo-grid-column>
+
+        </kendo-grid-column-group>
+
+        <kendo-grid-pdf fileName="Employees.pdf" [repeatHeaders]="true"></kendo-grid-pdf>
+        <kendo-grid-excel fileName="Employees.xlsx"></kendo-grid-excel>
+    </kendo-grid>
+<!-- </div> -->
+
+
+<!-- Edit Modal -->
+<p-dialog header="Update book" [(visible)]="displayUpdateModal" [breakpoints]="{'960px': '75vw'}"
+    [style]="{width: '50vw'}" [draggable]="false" [resizable]="false">
+
+    <form [formGroup]="updateBookForm">
+
+        <!-- <div class="p-field my-4">
+            <span class="p-float-label">
+                <input type="text" id="bookId" pInputText class="w-100" formControlName="bookId" [disabled]="true">
+                <label for="bookId">book Id</label>
+            </span>
+        </div> -->
+        <div class="p-field mb-4">
+            <span class="p-float-label">
+                <input type="text" id="bookName" pInputText class="w-100" formControlName="bookName">
+                <label for="bookName">Book Name</label>
+            </span>
+        </div>
+
+        <div class="p-field mb-4">
+            <p-dropdown [options]="authors" [(ngModel)]="selectedAuthor" placeholder="Select a Author"
+                optionLabel="authorName" formControlName="authorId" class="w-100" [showClear]="true"
+                [virtualScroll]="true"></p-dropdown>
+        </div>
+
+        <div class="p-field mb-4">
+            <span class="p-float-label">
+                <input type="number" id="edition" pInputText class="w-100" formControlName="edition">
+                <label for="edition">Edition</label>
+            </span>
+        </div>
+
+        <div class="p-field mb-4">
+            <span class="p-float-label">
+                <input type="text" id="language" pInputText class="w-100" formControlName="language">
+                <label for="language">Language</label>
+            </span>
+        </div>
+        <div class="p-field mb-4">
+            <span class="p-float-label">
+                <input type="number" id="copiesAvailable" pInputText class="w-100" formControlName="copiesAvailable">
+                <label for="copiesAvailable">Stocks</label>
+            </span>
+        </div>
+
+        <div class="p-field mb-4">
+            <span class="p-float-label">
+                <input type="number" id="releasedYear" pInputText class="w-100" formControlName="releasedYear">
+                <label for="releasedYear">Year of release</label>
+            </span>
+        </div>
+
+    </form>
+
+    <ng-template pTemplate="footer">
+        <p-button (click)="updateBook()" *ngIf="!updating;else loader" label="Update" styleClass="p-button-text">
+        </p-button>
+        <ng-template #loader>
+            <p-button [disabled]="true" styleClass="p-button-text"><i class="pi pi-spin pi-spinner"></i></p-button>
+        </ng-template>
+    </ng-template>
+
+</p-dialog>
+
+<!-- Add new Modal -->
+<p-dialog header="Create book" [(visible)]="displayCreateModal" [breakpoints]="{'960px': '75vw'}"
+    [style]="{width: '50vw'}" [draggable]="false" [resizable]="false">
+
+    <form [formGroup]="addNewBookForm">
+        <div class="p-field my-4">
+            <span class="p-float-label">
+                <input type="text" id="bookName" pInputText class="w-100" formControlName="bookName">
+                <label for="bookName">Book Name</label>
+            </span>
+        </div>
+
+        <div class="p-field mb-4">
+            <p-dropdown [options]="authors" [(ngModel)]="selectedAuthor" placeholder="Select a Author"
+                optionLabel="authorName" formControlName="authorId" class="w-100" [showClear]="true"
+                [virtualScroll]="true"></p-dropdown>
+        </div>
+
+        <div class="p-field mb-4">
+            <span class="p-float-label">
+                <input type="number" id="edition" pInputText class="w-100" formControlName="edition">
+                <label for="edition">Edition</label>
+            </span>
+        </div>
+
+        <div class="p-field mb-4">
+            <span class="p-float-label">
+                <input type="text" id="language" pInputText class="w-100" formControlName="language">
+                <label for="language">Language</label>
+            </span>
+        </div>
+
+        <div class="p-field mb-4">
+            <span class="p-float-label">
+                <input type="number" id="copiesAvailable" pInputText class="w-100" formControlName="copiesAvailable">
+                <label for="copiesAvailable">Stocks</label>
+            </span>
+        </div>
+
+        <div class="p-field mb-4">
+            <span class="p-float-label">
+                <input type="number" id="releasedYear" pInputText class="w-100" formControlName="releasedYear">
+                <label for="releasedYear">Year of release</label>
+            </span>
+        </div>
+
+        <!-- <div class="p-field mb-4">
+            <span class="p-float-label">
+                <input type="text" id="authorId" pInputText class="w-100" formControlName="authorId">
+                <label for="authorId">Author</label>
+            </span>
+        </div> -->
+
+
+
+    </form>
+
+    <ng-template pTemplate="footer">
+        <p-button (click)="addNewBook()" *ngIf="!adding;else loader" label="Create" styleClass="p-button-text">
+        </p-button>
+        <ng-template #loader>
+            <p-button [disabled]="true" styleClass="p-button-text"><i class="pi pi-spin pi-spinner"></i></p-button>
+        </ng-template>
+    </ng-template>
+
+</p-dialog>

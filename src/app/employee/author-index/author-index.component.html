@@ -1,16 +1,21 @@
-<kendo-grid [kendoGridBinding]="authorsGridView" kendoGridSelectBy="id" [(selectedKeys)]="selectedList" [pageSize]="20"
-    [pageable]="true" [sortable]="true" [groupable]="true" [reorderable]="true" [resizable]="true" [height]="650" 
-    [columnMenu]="{ filter: true }">
+<kendo-grid [kendoGridBinding]="authorsGridView" kendoGridSelectBy="authorId" [(selectedKeys)]="selectedList"
+    [pageSize]="20" [pageable]="true" [sortable]="true" [groupable]="true" [reorderable]="true" [resizable]="true"
+    [height]="650" [columnMenu]="{ filter: true }" class="shadow m-3" style="border-radius: 20px">
 
     <ng-template kendoGridToolbarTemplate>
 
-        <input [style.width.px]="165" placeholder="Search in all columns..." kendoTextBox
-            (input)="onFilter($event)" />
+        <input class="w-25" placeholder="Search in all columns..." pInputText (input)="onFilter($event)" />
 
         <kendo-grid-spacer></kendo-grid-spacer>
 
-        <button kendoGridExcelCommand type="button" icon="file-excel">
+        <button kendoGridExcelCommand type="button" icon="file-excel" pButton pRipple class="btn p-button-raised"
+            style="width: 15%;">
             Export to Excel
+        </button>
+
+        <button kendoButton type="button" icon="add" pButton pRipple class="btn p-button-raised" style="width: 15%;"
+            (click)="showCreateDialog()">
+            Add a new author
         </button>
 
         <!-- <button kendoGridPDFCommand icon="file-pdf">Export to PDF</button> -->
@@ -22,24 +27,27 @@
     <kendo-grid-column-group title="Authors" [columnMenu]="false">
 
         <kendo-grid-column field="authorId" title="Id" [width]="220">
-            <!-- <ng-template kendoGridCellTemplate let-dataItem>
-                <div class="customer-photo" [ngStyle]="{ 'background-image': photoURL(dataItem) }"></div>
-                <div class="customer-name">{{ dataItem.full_name }}</div>
-            </ng-template> -->
         </kendo-grid-column>
-        
+
         <kendo-grid-column field="authorName" title="Name" [width]="220">
         </kendo-grid-column>
 
         <kendo-grid-column field="authorAge" title="Age" [width]="100" [class]="{ 'text-center': true }"
             [resizable]="false">
-            <!-- <ng-template kendoGridCellTemplate let-dataItem>
-                <img class="flag" [src]="flagURL(dataItem)" width="30" />
-            </ng-template> -->
         </kendo-grid-column>
 
-        <kendo-grid-column field="primaryLanguage" title="Primary Language" [width]="100" [class]="{ 'text-center': true }"
-            [resizable]="false">
+        <kendo-grid-column field="primaryLanguage" title="Primary Language" [width]="100"
+            [class]="{ 'text-center': true }">
+        </kendo-grid-column>
+
+        <kendo-grid-column field="authorId" title="" [width]="100" [class]="{ 'text-center': true }" [sortable]="false"
+            [groupable]="false" [reorderable]="false" [resizable]="false">
+            <ng-template kendoGridCellTemplate let-dataItem>
+                <button type="button" kendoButton icon="pencil" themeColor="primary" class="m-1 w-75"
+                    (click)="showUpdateDialog(dataItem.authorId, dataItem)">Edit</button>
+                <button type="button" kendoButton icon="delete" themeColor="error" class="m-1 w-75"
+                    (click)="deleteAuthor(dataItem.authorId)">Delete</button>
+            </ng-template>
         </kendo-grid-column>
 
     </kendo-grid-column-group>
@@ -47,3 +55,88 @@
     <kendo-grid-pdf fileName="Employees.pdf" [repeatHeaders]="true"></kendo-grid-pdf>
     <kendo-grid-excel fileName="Employees.xlsx"></kendo-grid-excel>
 </kendo-grid>
+
+
+<!-- Edit Modal -->
+<p-dialog header="Update Author" [(visible)]="displayUpdateModal" [breakpoints]="{'960px': '75vw'}"
+    [style]="{width: '50vw'}" [draggable]="false" [resizable]="false">
+
+    <form [formGroup]="updateAuthorForm">
+
+        <!-- <div class="p-field my-4">
+            <span class="p-float-label">
+                <input type="text" id="AuthorId" pInputText class="w-100" formControlName="authorId" [disabled]="true">
+                <label for="AuthorId">Author Id</label>
+            </span>
+        </div> -->
+
+        <div class="p-field mb-4">
+            <span class="p-float-label">
+                <input type="text" id="AuthorName" pInputText class="w-100" formControlName="authorName">
+                <label for="AuthorName">Author Name</label>
+            </span>
+        </div>
+
+        <div class="p-field mb-4">
+            <span class="p-float-label">
+                <input type="number" id="AuthorAge" pInputText class="w-100" formControlName="authorAge">
+                <label for="AuthorAge">Author Age</label>
+            </span>
+        </div>
+
+        <div class="p-field mb-4">
+            <span class="p-float-label">
+                <input type="text" id="PrimaryLanguage" pInputText class="w-100" formControlName="primaryLanguage">
+                <label for="PrimaryLanguage">Primary language</label>
+            </span>
+        </div>
+
+    </form>
+
+    <ng-template pTemplate="footer">
+        <p-button (click)="updateAuthor()" *ngIf="!updating;else loader" label="Update" styleClass="p-button-text">
+        </p-button>
+        <ng-template #loader>
+            <p-button [disabled]="true" styleClass="p-button-text"><i class="pi pi-spin pi-spinner"></i></p-button>
+        </ng-template>
+    </ng-template>
+
+</p-dialog>
+
+<!-- Add new Modal -->
+<p-dialog header="Create Author" [(visible)]="displayCreateModal" [breakpoints]="{'960px': '75vw'}"
+    [style]="{width: '50vw'}" [draggable]="false" [resizable]="false">
+
+    <form [formGroup]="addNewAuthorForm">
+        <div class="p-field my-4">
+            <span class="p-float-label">
+                <input type="text" id="AuthorName" pInputText class="w-100" formControlName="authorName">
+                <label for="AuthorName">Author Name</label>
+            </span>
+        </div>
+
+        <div class="p-field mb-4">
+            <span class="p-float-label">
+                <input type="number" id="AuthorAge" pInputText class="w-100" formControlName="authorAge">
+                <label for="AuthorAge">Author Age</label>
+            </span>
+        </div>
+
+        <div class="p-field mb-4">
+            <span class="p-float-label">
+                <input type="text" id="PrimaryLanguage" pInputText class="w-100" formControlName="primaryLanguage">
+                <label for="PrimaryLanguage">Primary language</label>
+            </span>
+        </div>
+
+    </form>
+
+    <ng-template pTemplate="footer">
+        <p-button (click)="addNewAuthor()" *ngIf="!adding;else loader" label="Create" styleClass="p-button-text">
+        </p-button>
+        <ng-template #loader>
+            <p-button [disabled]="true" styleClass="p-button-text"><i class="pi pi-spin pi-spinner"></i></p-button>
+        </ng-template>
+    </ng-template>
+
+</p-dialog>

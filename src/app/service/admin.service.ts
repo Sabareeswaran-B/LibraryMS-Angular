@@ -14,37 +14,48 @@ export class AdminService {
 
     //Get all books in the library
     getAllBooks() {
-        return this.httpClient.get(`${env.baseUrl}/book/getallbooks`);
+        return this.httpClient.get(`${env.baseUrl}/book/getallbooks`, { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } });
     }
 
     //Get a single book by its id
     getBookById(id: string) {
-        return this.httpClient.get(`${env.baseUrl}/book/getbookbyid/${id}`);
+        return this.httpClient.get(`${env.baseUrl}/book/getbookbyid/${id}`, { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } });
     }
 
     //add a new book to the database
     addNewBook(book: Book) {
-        return this.httpClient.post(`${env.baseUrl}/book/addnewbook`, book);
+        return this.httpClient.post(`${env.baseUrl}/book/addnewbook`, {
+            bookName: book.bookName,
+            authorId: book.authorId,
+            copiesAvailable: book.copiesAvailable.toString(),
+            releasedYear: book.releasedYear.toString(),
+            edition: book.edition.toString(),
+            language: book.language
+        },
+            { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } });
     }
 
     //update the already existing book in the database
     updateExistingBook(id: string, book: Book) {
-        return this.httpClient.put(`${env.baseUrl}/book/updateexistingbook/${id}`, book)
+        book.edition = book.edition.toString();
+        book.copiesAvailable = book.copiesAvailable.toString();
+        book.releasedYear = book.releasedYear.toString();
+        return this.httpClient.put(`${env.baseUrl}/book/updateexistingbook/${id}`, book, { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } })
     }
 
     //add stock of the book which is already in the library
     addStock(id: string, copiesToAdd: number) {
-        return this.httpClient.put(`${env.baseUrl}/book/addstock/${id}/${copiesToAdd}`, {});
+        return this.httpClient.put(`${env.baseUrl}/book/addstock/${id}/${copiesToAdd}`, {}, { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } });
     }
-    
+
     //remove stock of the book which is already in the library
     removeStock(id: string, copiesToRemove: number) {
-        return this.httpClient.put(`${env.baseUrl}/book/removestock/${id}/${copiesToRemove}`, {});
+        return this.httpClient.put(`${env.baseUrl}/book/removestock/${id}/${copiesToRemove}`, {}, { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } });
     }
 
     //delete the book from the library database
     deleteBook(id: string) {
-        return this.httpClient.delete(`${env.baseUrl}/book/deletebook/${id}`);
+        return this.httpClient.delete(`${env.baseUrl}/book/deletebook/${id}`, { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } });
     }
 
 
@@ -53,27 +64,35 @@ export class AdminService {
 
     //Get all author in the database
     getAllAuthors() {
-        return this.httpClient.get(`${env.baseUrl}/author/getallauthors`);
+        return this.httpClient.get(`${env.baseUrl}/author/getallauthors`, { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } });
     }
 
     //Get a single author by his id
     getAuthorById(id: string) {
-        return this.httpClient.get(`${env.baseUrl}/author/getauthorbyid/${id}`);
+        return this.httpClient.get(`${env.baseUrl}/author/getauthorbyid/${id}`, { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } });
     }
 
     //Add a new author to the database
     addNewAuthor(author: Author) {
-        return this.httpClient.post(`${env.baseUrl}/author/addnewauthor`, author);
+        return this.httpClient.post(`${env.baseUrl}/author/addnewauthor`,
+            {
+                authorName: author.authorName,
+                authorAge: author.authorAge.toString(),
+                primaryLanguage: author.primaryLanguage
+            },
+            { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } }
+        );
     }
 
     //Update the author info which is already exist in the database
     updateExistingAuthor(id: string, author: Author) {
-        return this.httpClient.post(`${env.baseUrl}/author/updateexistingauthor/${id}`, author);
+        author.authorAge = author.authorAge.toString();
+        return this.httpClient.put(`${env.baseUrl}/author/updateexistingauthor/${id}`, author, { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } });
     }
 
     //delete the author from the database
     deleteAuthor(id: string) {
-        return this.httpClient.delete(`${env.baseUrl}/author/deleteauthor/${id}`);
+        return this.httpClient.delete(`${env.baseUrl}/author/deleteauthor/${id}`, { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } });
     }
 
 

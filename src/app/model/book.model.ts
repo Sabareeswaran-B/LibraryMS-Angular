@@ -1,3 +1,5 @@
+import { Author } from "./author.model";
+
 export class Book {
     bookId!: string;
     bookName!: string;
@@ -6,4 +8,5 @@ export class Book {
     copiesAvailable!: string;
     language!: string;
     authorId!: string;
+    author!: Author;
 }

@@ -21,6 +21,6 @@ body {
 /* } */
 
 
-p-inputnumber, .p-inputnumber, p-calendar, .p-calendar, p-password, .p-password, .p-password-input, .p-inputtext {
+p-inputnumber, .p-inputnumber, p-calendar, .p-calendar, p-password, .p-password, .p-password-input, .p-inputtext, p-dropdown, .p-dropdown {
     width: 100%
 }

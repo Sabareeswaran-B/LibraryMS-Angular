@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Book } from 'src/app/model/book.model';
 import { AdminService } from 'src/app/service/admin.service';
 import { process } from "@progress/kendo-data-query";
 import { Author } from 'src/app/model/author.model';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -11,7 +12,7 @@ import { Author } from 'src/app/model/author.model';
   templateUrl: './book-index.component.html',
   styleUrls: ['./book-index.component.css']
 })
-export class BookIndexComponent implements OnInit {
+export class BookIndexComponent implements OnInit, OnDestroy {
   authors: Author[] = [];
   books: Book[] = [];
   booksGridView: any[] = [];
@@ -21,6 +22,7 @@ export class BookIndexComponent implements OnInit {
   updating: boolean = false;
   adding: boolean = false;
   selectedAuthor!: Author;
+  subscriptions: Subscription[] = [];
 
   public selectedList: string[] = [];
   constructor(private adminService: AdminService, private formBuilder: FormBuilder,) { }
@@ -48,27 +50,37 @@ export class BookIndexComponent implements OnInit {
     this.getAllBooks();
   }
 
+  ngOnDestroy(): void {
+    this.subscriptions.map((x) => {
+      if (!x.closed) {
+        x.unsubscribe();
+      }
+    })
+  }
+
   getAllBooks() {
-    this.adminService.getAllBooks().subscribe({
+    let _subscription = this.adminService.getAllBooks().subscribe({
       next: (data) => {
         this.books = data['data' as keyof object] as Book[];
-        this.booksGridView = this.books;       
+        this.booksGridView = this.books;
       },
       error: (err) => {
         console.log(err);
       }
     });
+    this.subscriptions.push(_subscription);
   }
 
   getAllAuthors() {
-    this.adminService.getAllAuthors().subscribe({
+    let _subscription = this.adminService.getAllAuthors().subscribe({
       next: (data) => {
-        this.authors = data['data' as keyof object] as Author[];       
+        this.authors = data['data' as keyof object] as Author[];
       },
       error: (err) => {
         console.log(err);
       }
     });
+    this.subscriptions.push(_subscription);
   }
 
   public onFilter(event: Event): void {
@@ -115,7 +127,7 @@ export class BookIndexComponent implements OnInit {
   displayCreateModal: boolean = false;
 
   showUpdateDialog(book: Book) {
-    if(this.authors.length <= 0)
+    if (this.authors.length <= 0)
       this.getAllAuthors();
     this.displayUpdateModal = true;
     this.selectedId = book.bookId;
@@ -130,7 +142,7 @@ export class BookIndexComponent implements OnInit {
     })
   }
   showCreateDialog() {
-    if(this.authors.length <= 0)
+    if (this.authors.length <= 0)
       this.getAllAuthors();
     this.displayCreateModal = true;
   }
@@ -139,7 +151,7 @@ export class BookIndexComponent implements OnInit {
     let _updatedBook = this.updateBookForm.value;
     _updatedBook.authorId = _updatedBook.authorId.authorId;
     this.updating = true;
-    this.adminService.updateExistingBook(this.selectedId, _updatedBook).subscribe({
+    let _subscription = this.adminService.updateExistingBook(this.selectedId, _updatedBook).subscribe({
       next: (data) => {
         console.log(data);
         this.updating = false;
@@ -152,7 +164,8 @@ export class BookIndexComponent implements OnInit {
         this.updating = false;
         this.displayUpdateModal = false;
       }
-    })
+    });
+    this.subscriptions.push(_subscription);
   }
 
   addNewBook() {
@@ -160,7 +173,7 @@ export class BookIndexComponent implements OnInit {
     _newBook.authorId = _newBook.authorId.authorId;
     console.log(_newBook);
     this.adding = true;
-    this.adminService.addNewBook(_newBook).subscribe({
+    let _subscription = this.adminService.addNewBook(_newBook).subscribe({
       next: (data) => {
         console.log(data);
         this.adding = false;
@@ -173,11 +186,12 @@ export class BookIndexComponent implements OnInit {
         this.adding = false;
         this.displayCreateModal = false;
       }
-    })
+    });
+    this.subscriptions.push(_subscription);
   }
 
   deleteBook(id: string) {
-    this.adminService.deleteBook(id).subscribe({
+    let _subscription = this.adminService.deleteBook(id).subscribe({
       next: (data) => {
         console.log(data);
         this.getAllBooks();
@@ -185,7 +199,8 @@ export class BookIndexComponent implements OnInit {
       error: (err) => {
         console.log(err);
       }
-    })
+    });
+    this.subscriptions.push(_subscription);
   }
 
 }

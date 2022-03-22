@@ -1,17 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AdminService } from 'src/app/service/admin.service';
 import { process } from "@progress/kendo-data-query";
 import { Author } from 'src/app/model/author.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-author-index',
   templateUrl: './author-index.component.html',
   styleUrls: ['./author-index.component.css']
 })
-export class AuthorIndexComponent implements OnInit {
+export class AuthorIndexComponent implements OnInit, OnDestroy {
 
   authors: Author[] = [];
+  subscriptions: Subscription[] = [];
   authorsGridView: any[] = [];
   selectedId!: string;
   updateAuthorForm!: FormGroup;
@@ -22,6 +24,14 @@ export class AuthorIndexComponent implements OnInit {
   public selectedList: string[] = [];
 
   constructor(private adminService: AdminService, private formBuilder: FormBuilder,) { }
+
+  ngOnDestroy(): void {
+    this.subscriptions.map((x) => {
+      if (!x.closed) {
+        x.unsubscribe();
+      }
+    })
+  }
 
   ngOnInit(): void {
     this.updateAuthorForm = this.formBuilder.group({
@@ -42,7 +52,7 @@ export class AuthorIndexComponent implements OnInit {
   }
 
   getAllAuthors() {
-    this.adminService.getAllAuthors().subscribe({
+    let _subscription = this.adminService.getAllAuthors().subscribe({
       next: (data) => {
         this.authors = data['data' as keyof object] as Author[];
         this.authorsGridView = this.authors;
@@ -54,6 +64,7 @@ export class AuthorIndexComponent implements OnInit {
         console.log(err);
       }
     });
+    this.subscriptions.push(_subscription);
   }
 
   public onFilter(event: Event): void {
@@ -105,7 +116,7 @@ export class AuthorIndexComponent implements OnInit {
 
   updateAuthor() {
     this.updating = true;
-    this.adminService.updateExistingAuthor(this.selectedId, this.updateAuthorForm.value).subscribe({
+    let _subscription = this.adminService.updateExistingAuthor(this.selectedId, this.updateAuthorForm.value).subscribe({
       next: (data) => {
         console.log(data);
         this.updating = false;
@@ -119,11 +130,12 @@ export class AuthorIndexComponent implements OnInit {
         this.displayUpdateModal = false;
       }
     })
+    this.subscriptions.push(_subscription);
   }
 
   addNewAuthor() {
     this.adding = true;
-    this.adminService.addNewAuthor(this.addNewAuthorForm.value).subscribe({
+    let _subscription = this.adminService.addNewAuthor(this.addNewAuthorForm.value).subscribe({
       next: (data) => {
         console.log(data);
         this.adding = false;
@@ -137,10 +149,11 @@ export class AuthorIndexComponent implements OnInit {
         this.displayCreateModal = false;
       }
     })
+    this.subscriptions.push(_subscription);
   }
 
   deleteAuthor(id:string) {
-    this.adminService.deleteAuthor(id).subscribe({
+    let _subscription = this.adminService.deleteAuthor(id).subscribe({
       next: (data) => {
         console.log(data);
         this.getAllAuthors();
@@ -149,6 +162,7 @@ export class AuthorIndexComponent implements OnInit {
         console.log(err);
       }
     })
+    this.subscriptions.push(_subscription);
   }
 
 }

@@ -1,17 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Employee } from 'src/app/model/employee.model';
 import { process } from "@progress/kendo-data-query";
 import { AdminService } from 'src/app/service/admin.service';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-employee-index',
   templateUrl: './employee-index.component.html',
   styleUrls: ['./employee-index.component.css']
 })
-export class EmployeeIndexComponent implements OnInit {
+export class EmployeeIndexComponent implements OnInit, OnDestroy {
 
   employees: Employee[] = [];
   employeesGridView: any[] = [];
@@ -23,6 +24,7 @@ export class EmployeeIndexComponent implements OnInit {
   show = faEye as IconProp;
   hide = faEyeSlash as IconProp;
   encryptPassword = true;
+  subscriptions: Subscription[] = [];
 
   public selectedList: string[] = [];
 
@@ -32,13 +34,21 @@ export class EmployeeIndexComponent implements OnInit {
     this.encryptPassword = !this.encryptPassword;
   }
 
+  ngOnDestroy(): void {
+    this.subscriptions.map((x) => {
+      if (!x.closed) {
+        x.unsubscribe();
+      }
+    })
+  }
+
   ngOnInit(): void {
     this.updateEmployeeForm = this.formBuilder.group({
       employeeId: ['', Validators.required],
       employeeName: ['', Validators.required],
       employeeAge: ['', Validators.required],
       employeeRole: ['', Validators.required],
-      employeeEmail: ['', Validators.required, Validators.email],
+      employeeEmail: ['', Validators.required],
       employeePhoneNo: ['', Validators.required],
       password: ['', Validators.required],
     });
@@ -48,7 +58,7 @@ export class EmployeeIndexComponent implements OnInit {
       employeeName: ['', Validators.required],
       employeeAge: ['', Validators.required],
       employeeRole: ['', Validators.required],
-      employeeEmail: ['', Validators.required, Validators.email],
+      employeeEmail: ['', Validators.required],
       employeePhoneNo: ['', Validators.required],
       password: ['', Validators.required],
     });
@@ -57,7 +67,7 @@ export class EmployeeIndexComponent implements OnInit {
   }
 
   getAllEmployees() {
-    this.adminService.getAllEmployees().subscribe({
+    let _subscription = this.adminService.getAllEmployees().subscribe({
       next: (data) => {
         this.employees = data['data' as keyof object] as Employee[];
         this.employeesGridView = this.employees;
@@ -69,6 +79,7 @@ export class EmployeeIndexComponent implements OnInit {
         console.log(err);
       }
     });
+    this.subscriptions.push(_subscription);
   }
 
   public onFilter(event: Event): void {
@@ -115,6 +126,7 @@ export class EmployeeIndexComponent implements OnInit {
   displayCreateModal: boolean = false;
 
   showUpdateDialog(id: string, employee: Employee) {
+    console.log(employee);
     this.displayUpdateModal = true;
     this.selectedId = id;
     this.updateEmployeeForm.setValue({
@@ -124,6 +136,7 @@ export class EmployeeIndexComponent implements OnInit {
       'employeeRole': employee.employeeRole,
       'employeeEmail': employee.employeeEmail,
       'employeePhoneNo': employee.employeePhoneNo,
+      'password': "",
     })
   }
   showCreateDialog() {
@@ -132,7 +145,8 @@ export class EmployeeIndexComponent implements OnInit {
 
   updateEmployee() {
     this.updating = true;
-    this.adminService.updateExistingEmployee(this.selectedId, this.updateEmployeeForm.value).subscribe({
+    let _subscription = this.adminService.updateExistingEmployee(this.selectedId, this.updateEmployeeForm.value)
+    .subscribe({
       next: (data) => {
         console.log(data);
         this.updating = false;
@@ -145,12 +159,14 @@ export class EmployeeIndexComponent implements OnInit {
         this.updating = false;
         this.displayUpdateModal = false;
       }
-    })
+    });
+    this.subscriptions.push(_subscription);
   }
 
   addNewEmployee() {
     this.adding = true;
-    this.adminService.addNewEmployee(this.addNewEmployeeForm.value).subscribe({
+    let _subscription = this.adminService.addNewEmployee(this.addNewEmployeeForm.value)
+    .subscribe({
       next: (data) => {
         console.log(data);
         this.adding = false;
@@ -163,11 +179,12 @@ export class EmployeeIndexComponent implements OnInit {
         this.adding = false;
         this.displayCreateModal = false;
       }
-    })
+    });
+    this.subscriptions.push(_subscription);
   }
 
   deleteemployee(id: string) {
-    this.adminService.deleteEmployee(id).subscribe({
+    let _subscription = this.adminService.deleteEmployee(id).subscribe({
       next: (data) => {
         console.log(data);
         this.getAllEmployees();
@@ -175,7 +192,8 @@ export class EmployeeIndexComponent implements OnInit {
       error: (err) => {
         console.log(err);
       }
-    })
+    });
+    this.subscriptions.push(_subscription);
   }
 
 }

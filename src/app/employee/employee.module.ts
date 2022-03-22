@@ -72,6 +72,8 @@ import { LayoutModule } from "@progress/kendo-angular-layout";
     SideNavEmployeeComponent,
     VisitorIndexComponent,
     HomeEmployeeComponent,
+    EmployeeIndexComponent,
+    LendingIndexComponent,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

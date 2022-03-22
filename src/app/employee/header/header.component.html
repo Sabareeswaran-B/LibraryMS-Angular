@@ -1,12 +1,13 @@
-<div class="custom-toolbar shadow" style="background-color: #fff; height: 2.5vw; z-index: 5;">
-  <button kendoButton icon="menu" fillMode="flat" (click)="drawer.toggle()"></button>
-  <span class="mail-box">Mail Box</span>
+<div>
+  <div class="custom-toolbar shadow" style="background-color: #fff; z-index: 5;">
+    <button kendoButton icon="menu" fillMode="flat" (click)="drawer.toggle()"></button>
+    <span class="mail-box"><b>LibraryMS</b></span>
+  </div>
+  <kendo-drawer-container style="z-index: 5;">
+    <kendo-drawer #drawer [items]="items" mode="push" [mini]="true" [expanded]="true" (select)="onSelect($event)">
+    </kendo-drawer>
+    <kendo-drawer-content>
+      <router-outlet></router-outlet>
+    </kendo-drawer-content>
+  </kendo-drawer-container>
 </div>
-<kendo-drawer-container class="shadow" style="z-index: 5;">
-  <kendo-drawer #drawer [items]="items" mode="push" [mini]="true" [expanded]="true" (select)="onSelect($event)">
-  </kendo-drawer>
-
-  <kendo-drawer-content>
-
-  </kendo-drawer-content>
-</kendo-drawer-container>

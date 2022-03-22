@@ -24,7 +24,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   remembermeText = "Remember me";
   finalise = new Subject<void>();
 
-  subscriptions:Subscription[] = [];
+  subscriptions: Subscription[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -34,7 +34,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscriptions.map((x) => {
-      if(!x.closed){
+      if (!x.closed) {
         x.unsubscribe();
       }
     })
@@ -43,7 +43,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     localStorage.clear();
     this.loginForm = this.formBuilder.group({
-      employeeEmail: ['', Validators.required, Validators.email],
+      employeeEmail: ['', Validators.required],
       employeePassword: ['', Validators.required]
     });
   }
@@ -65,7 +65,7 @@ export class LoginComponent implements OnInit, OnDestroy {
           localStorage.setItem('isLoggedin', 'true');
           localStorage.setItem('role', response.role.toString());
           // if(response)
-          this.router.navigate(['']);
+          this.router.navigate([''], { replaceUrl: true });
         },
         error: (error) => {
           console.log(error);

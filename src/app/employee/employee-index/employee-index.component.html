@@ -35,7 +35,9 @@
             <ng-template kendoGridCellTemplate let-dataItem>
                 <div *ngIf="dataItem.employeeRole == 0;else employee">Admin</div>
             </ng-template>
-            <<ng-template #employee><div>Employee</div></ng-template>
+            <<ng-template #employee>
+                <div>Employee</div>
+                </ng-template>
         </kendo-grid-column>
 
         <kendo-grid-column field="employeeEmail" title="Email" [width]="220">
@@ -48,8 +50,8 @@
             [resizable]="false">
         </kendo-grid-column>
 
-        <kendo-grid-column field="employeeId" title="" [width]="100" [class]="{ 'text-center': true }" [sortable]="false"
-            [groupable]="false" [reorderable]="false" [resizable]="false">
+        <kendo-grid-column field="employeeId" title="" [width]="100" [class]="{ 'text-center': true }"
+            [sortable]="false" [groupable]="false" [reorderable]="false" [resizable]="false">
             <ng-template kendoGridCellTemplate let-dataItem>
                 <button type="button" kendoButton icon="pencil" themeColor="primary" class="m-1 w-75"
                     (click)="showUpdateDialog(dataItem.employeeId, dataItem)">Edit</button>
@@ -106,15 +108,15 @@
         </div>
         <div class="p-field mb-4">
             <span class="p-float-label">
-                <input type="tel" id="employeePhoneNo" pInputText class="w-100" formControlName="employeePhoneNo">
+                <input type="text" id="employeePhoneNo" pInputText class="w-100" formControlName="employeePhoneNo">
                 <label for="employeePhoneNo">employee Phone Number</label>
             </span>
         </div>
 
         <div class="p-field mb-4">
             <span class="p-inputgroup">
-                <input [type]="encryptPassword ? 'password' : 'text'" placeholder="Password" id="password"
-                    pInputText class="w-100" formControlName="password">
+                <input [type]="encryptPassword ? 'password' : 'text'" placeholder="Password" id="password" pInputText
+                    class="w-100" formControlName="password">
                 <button type="button" (click)="passwordShow()" pButton pRipple
                     [icon]='encryptPassword ? "pi pi-eye" : "pi pi-eye-slash"' styleClass="p-button-warn"></button>
             </span>
@@ -171,8 +173,8 @@
 
         <div class="p-field mb-4">
             <span class="p-inputgroup">
-                <input [type]="encryptPassword ? 'password' : 'text'" placeholder="Password" id="password"
-                    pInputText class="w-100" formControlName="password">
+                <input [type]="encryptPassword ? 'password' : 'text'" placeholder="Password" id="password" pInputText
+                    class="w-100" formControlName="password">
                 <button type="button" (click)="passwordShow()" pButton pRipple
                     [icon]='encryptPassword ? "pi pi-eye" : "pi pi-eye-slash"' styleClass="p-button-warn"></button>
             </span>

@@ -10,12 +10,12 @@ import { HomeEmployeeComponent } from './home.employee/home.employee.component';
 import { LendingIndexComponent } from './lending-index/lending-index.component';
 import { VisitorIndexComponent } from './visitor-index/visitor-index.component';
 
-var isAdmin = localStorage.getItem('role');
+var isAdmin = Number.parseInt(localStorage.getItem('role')!);
 
 const routes: Routes = [
     {
         path: '',
-        redirectTo: isAdmin != null && Number.parseInt(isAdmin) == 0 ? "admin" : "employee",
+        redirectTo: isAdmin == 0 ? "admin" : "employee",
         pathMatch: 'prefix'
     },
 

@@ -1,68 +1,67 @@
 <!-- <div class="container table-container shadow-lg"> -->
-    <kendo-grid [kendoGridBinding]="booksGridView" kendoGridSelectBy="bookId" [(selectedKeys)]="selectedList"
-        [pageSize]="20" [pageable]="true" [sortable]="true" [groupable]="true" [reorderable]="true" [resizable]="true"
-        [height]="650" [columnMenu]="{ filter: true }" class="shadow m-3" style="border-radius: 20px">
+<kendo-grid [kendoGridBinding]="booksGridView" kendoGridSelectBy="bookId" [(selectedKeys)]="selectedList"
+    [pageSize]="20" [pageable]="true" [sortable]="true" [groupable]="true" [reorderable]="true" [resizable]="true"
+    [height]="650" [columnMenu]="{ filter: true }" class="shadow m-3" style="border-radius: 20px">
 
-        <ng-template kendoGridToolbarTemplate>
+    <ng-template kendoGridToolbarTemplate>
 
-            <input class="w-25" placeholder="Search in all columns..." pInputText (input)="onFilter($event)" />
+        <input class="w-25" placeholder="Search in all columns..." pInputText (input)="onFilter($event)" />
 
-            <kendo-grid-spacer></kendo-grid-spacer>
+        <kendo-grid-spacer></kendo-grid-spacer>
 
-            <button kendoGridExcelCommand type="button" icon="file-excel" pButton pRipple class="btn p-button-raised"
-                style="width: 15%;">
-                Export to Excel
-            </button>
+        <button kendoGridExcelCommand type="button" icon="file-excel" pButton pRipple class="btn p-button-raised"
+            style="width: 15%;">
+            Export to Excel
+        </button>
 
-            <button kendoButton type="button" icon="add" pButton pRipple class="btn p-button-raised" style="width: 15%;"
-                (click)="showCreateDialog()">
-                Add a new book
-            </button>
+        <button kendoButton type="button" icon="add" pButton pRipple class="btn p-button-raised" style="width: 15%;"
+            (click)="showCreateDialog()">
+            Add a new book
+        </button>
 
-            <!-- <button kendoGridPDFCommand icon="file-pdf">Export to PDF</button> -->
-        </ng-template>
+        <!-- <button kendoGridPDFCommand icon="file-pdf">Export to PDF</button> -->
+    </ng-template>
 
-        <kendo-grid-checkbox-column [width]="45" [headerClass]="{ 'text-center': true }"
-            [class]="{ 'text-center': true }" [resizable]="false" [columnMenu]="false" [showSelectAll]="true">
-        </kendo-grid-checkbox-column>
+    <kendo-grid-checkbox-column [width]="45" [headerClass]="{ 'text-center': true }" [class]="{ 'text-center': true }"
+        [resizable]="false" [columnMenu]="false" [showSelectAll]="true">
+    </kendo-grid-checkbox-column>
 
-        <kendo-grid-column-group title="books" [columnMenu]="false">
+    <kendo-grid-column-group title="books" [columnMenu]="false">
 
-            <!-- <kendo-grid-column field="bookId" title="Id" [width]="220">
+        <!-- <kendo-grid-column field="bookId" title="Id" [width]="220">
         </kendo-grid-column> -->
 
-            <kendo-grid-column field="bookName" title="Name" [width]="220">
-            </kendo-grid-column>
+        <kendo-grid-column field="bookName" title="Name" [width]="220">
+        </kendo-grid-column>
 
-            <kendo-grid-column field="author.authorName" title="Author" [width]="100" [class]="{ 'text-center': true }"
-                [resizable]="false">
-            </kendo-grid-column>
+        <kendo-grid-column field="author.authorName" title="Author" [width]="100" [class]="{ 'text-center': true }"
+            [resizable]="false">
+        </kendo-grid-column>
 
-            <kendo-grid-column field="language" title="Language" [width]="100" [class]="{ 'text-center': true }">
-            </kendo-grid-column>
-            <kendo-grid-column field="releasedYear" title="Year of release" [width]="100"
-                [class]="{ 'text-center': true }">
-            </kendo-grid-column>
-            <kendo-grid-column field="edition" title="Edition" [width]="100" [class]="{ 'text-center': true }">
-            </kendo-grid-column>
-            <kendo-grid-column field="copiesAvailable" title="Stocks" [width]="100" [class]="{ 'text-center': true }">
-            </kendo-grid-column>
+        <kendo-grid-column field="language" title="Language" [width]="100" [class]="{ 'text-center': true }">
+        </kendo-grid-column>
+        <kendo-grid-column field="releasedYear" title="Year of release" [width]="100" [class]="{ 'text-center': true }">
+        </kendo-grid-column>
+        <kendo-grid-column field="edition" title="Edition" [width]="100" [class]="{ 'text-center': true }">
+        </kendo-grid-column>
+        <kendo-grid-column field="copiesAvailable" title="Stocks" [width]="100" [class]="{ 'text-center': true }">
+        </kendo-grid-column>
 
-            <kendo-grid-column field="bookId" title="" [width]="100" [class]="{ 'text-center': true }"
-                [sortable]="false" [groupable]="false" [reorderable]="false" [resizable]="false">
-                <ng-template kendoGridCellTemplate let-dataItem>
-                    <button type="button" kendoButton icon="pencil" themeColor="primary" class="m-1 w-75"
-                        (click)="showUpdateDialog(dataItem)">Edit</button>
-                    <button type="button" kendoButton icon="delete" themeColor="error" class="m-1 w-75"
-                        (click)="deleteBook(dataItem.bookId)">Delete</button>
-                </ng-template>
-            </kendo-grid-column>
+        <kendo-grid-column field="bookId" title="" [width]="100" [class]="{ 'text-center': true }" [sortable]="false"
+            [groupable]="false" [reorderable]="false" [resizable]="false">
+            <ng-template kendoGridCellTemplate let-dataItem>
+                <button type="button" kendoButton icon="pencil" themeColor="primary" class="m-1 w-75"
+                    (click)="showUpdateDialog(dataItem)">Edit</button>
+                <button type="button" kendoButton icon="delete" themeColor="error" class="m-1 w-75"
+                    (click)="deleteBook(dataItem.bookId)">Delete</button>
+            </ng-template>
+        </kendo-grid-column>
 
-        </kendo-grid-column-group>
+    </kendo-grid-column-group>
 
-        <kendo-grid-pdf fileName="Employees.pdf" [repeatHeaders]="true"></kendo-grid-pdf>
-        <kendo-grid-excel fileName="Employees.xlsx"></kendo-grid-excel>
-    </kendo-grid>
+    <kendo-grid-pdf fileName="Employees.pdf" [repeatHeaders]="true"></kendo-grid-pdf>
+    <kendo-grid-excel fileName="Employees.xlsx"></kendo-grid-excel>
+</kendo-grid>
 <!-- </div> -->
 
 

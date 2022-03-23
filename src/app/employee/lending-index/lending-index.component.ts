@@ -12,4 +12,11 @@ export class LendingIndexComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  collapedSideBar!: boolean;
+  
+  receiveCollapsed($event: boolean) {
+    this.collapedSideBar = $event;
+  }
+
+
 }

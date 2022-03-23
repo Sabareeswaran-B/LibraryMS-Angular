@@ -7,9 +7,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeAdminComponent implements OnInit {
 
+  
   constructor() { }
-
-  ngOnInit(): void {
+  
+  ngOnInit() { }
+  
+  collapedSideBar!: boolean;
+  receiveCollapsed($event: boolean) {
+    this.collapedSideBar = $event;
   }
 
 }

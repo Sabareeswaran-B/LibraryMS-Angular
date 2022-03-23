@@ -25,6 +25,13 @@ export class BookIndexComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
 
   public selectedList: string[] = [];
+
+  collapedSideBar!: boolean;
+  
+  receiveCollapsed($event: boolean) {
+    this.collapedSideBar = $event;
+  }
+
   constructor(private adminService: AdminService, private formBuilder: FormBuilder,) { }
 
   ngOnInit(): void {

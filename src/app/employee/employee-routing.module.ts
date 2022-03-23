@@ -15,12 +15,11 @@ var isAdmin = Number.parseInt(localStorage.getItem('role')!);
 const routes: Routes = [
     {
         path: '',
-        redirectTo: isAdmin == 0 ? "admin" : "employee",
-        pathMatch: 'prefix'
+        redirectTo: '/admin/dashboard',
+        pathMatch: 'full'
     },
-
     {
-        path: 'admin',
+        path: 'admin/dashboard',
         component: HomeAdminComponent,
         canActivate: [AuthGuard, AdminGuard],
     },
@@ -51,7 +50,7 @@ const routes: Routes = [
     },
 
     {
-        path: 'employee',
+        path: 'employee/dashboard',
         component: HomeEmployeeComponent,
         canActivate: [AuthGuard]
     },

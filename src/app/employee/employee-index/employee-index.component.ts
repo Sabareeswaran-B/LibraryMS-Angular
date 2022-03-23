@@ -28,6 +28,13 @@ export class EmployeeIndexComponent implements OnInit, OnDestroy {
 
   public selectedList: string[] = [];
 
+  collapedSideBar!: boolean;
+  
+  receiveCollapsed($event: boolean) {
+    this.collapedSideBar = $event;
+  }
+
+
   constructor(private adminService: AdminService, private formBuilder: FormBuilder,) { }
 
   passwordShow() {

@@ -1,0 +1,95 @@
+$topnav-background-color: #2196F3;
+.sidebar {
+    position: fixed;
+    z-index: 1000;
+    top: 56px;
+    width: 235px;
+    margin-bottom: 48px;
+    border: none;
+    overflow-y: auto;
+    background-color: $topnav-background-color;
+    bottom: 0;
+    overflow-x: hidden;
+    padding-bottom: 40px;
+    white-space: nowrap;
+    -webkit-transition: all 0.2s ease-in-out;
+    -moz-transition: all 0.2s ease-in-out;
+    -ms-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+    .list-group {
+        a.list-group-item {
+            background: $topnav-background-color;
+            border: 0;
+            border-radius: 0;
+            color: #fff;
+            text-decoration: none;
+
+            .fa {
+                margin-right: 10px;
+            }
+        }
+
+        a:hover {
+            background: darken($topnav-background-color, 10%);
+            color: #fff;
+        }
+
+        a.router-link {
+            background: darken($topnav-background-color, 25%);
+        }
+    }
+    
+}
+
+
+@media screen and (max-width: 992px) {
+    .sidebar {
+        top: 54px;
+        left: 0px;
+    }
+}
+
+@media print {
+    .sidebar {
+        display: none !important;
+    }
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+.toggle-button {
+    position: fixed;
+    width: 236px;
+    cursor: pointer;
+    padding: 12px;
+    bottom: 0;
+    color: #fff;
+    background: $topnav-background-color;
+
+    i {
+        font-size: 23px;
+    }
+
+    &:hover {
+        background: darken($topnav-background-color, 5%);
+        color: #fff;
+    }
+
+    border-top: 1px solid #999;
+    -webkit-transition: all 0.2s ease-in-out;
+    -moz-transition: all 0.2s ease-in-out;
+    -ms-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+}
+
+.collapsed {
+    width: 60px;
+
+    span {
+        display: none;
+    }
+}

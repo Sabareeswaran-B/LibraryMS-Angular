@@ -15,9 +15,7 @@ import { PasswordModule } from "primeng/password";
 import { HomeAdminComponent } from './home.admin/home.admin.component';
 import { BookIndexComponent } from './book-index/book-index.component';
 import { AuthorIndexComponent } from './author-index/author-index.component';
-import { SideNavAdminComponent } from './side-nav.admin/side-nav.admin.component';
 import { HeaderComponent } from './header/header.component';
-import { SideNavEmployeeComponent } from './side-nav.employee/side-nav.employee.component';
 import { VisitorIndexComponent } from './visitor-index/visitor-index.component';
 import { HomeEmployeeComponent } from './home.employee/home.employee.component';
 import { EmployeeIndexComponent } from './employee-index/employee-index.component';
@@ -25,6 +23,7 @@ import { LendingIndexComponent } from './lending-index/lending-index.component';
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { LayoutModule } from "@progress/kendo-angular-layout";
+import { SidebarComponent } from './sidebar/sidebar.component';
 
 
 
@@ -35,13 +34,12 @@ import { LayoutModule } from "@progress/kendo-angular-layout";
     HomeAdminComponent,
     BookIndexComponent,
     AuthorIndexComponent,
-    SideNavAdminComponent,
     HeaderComponent,
-    SideNavEmployeeComponent,
     VisitorIndexComponent,
     HomeEmployeeComponent,
     EmployeeIndexComponent,
     LendingIndexComponent,
+    SidebarComponent,
   ],
   imports: [
     FormsModule,
@@ -67,13 +65,12 @@ import { LayoutModule } from "@progress/kendo-angular-layout";
     HomeAdminComponent,
     BookIndexComponent,
     AuthorIndexComponent,
-    SideNavAdminComponent,
     HeaderComponent,
-    SideNavEmployeeComponent,
     VisitorIndexComponent,
     HomeEmployeeComponent,
     EmployeeIndexComponent,
     LendingIndexComponent,
+    SidebarComponent,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

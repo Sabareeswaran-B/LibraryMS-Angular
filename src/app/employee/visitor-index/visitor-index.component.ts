@@ -12,4 +12,11 @@ export class VisitorIndexComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  collapedSideBar!: boolean;
+  
+  receiveCollapsed($event: boolean) {
+    this.collapedSideBar = $event;
+  }
+
+
 }

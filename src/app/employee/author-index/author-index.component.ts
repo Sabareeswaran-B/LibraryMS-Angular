@@ -25,6 +25,12 @@ export class AuthorIndexComponent implements OnInit, OnDestroy {
 
   constructor(private adminService: AdminService, private formBuilder: FormBuilder,) { }
 
+  collapedSideBar!: boolean;
+  
+  receiveCollapsed($event: boolean) {
+    this.collapedSideBar = $event;
+  }
+
   ngOnDestroy(): void {
     this.subscriptions.map((x) => {
       if (!x.closed) {
@@ -152,7 +158,7 @@ export class AuthorIndexComponent implements OnInit, OnDestroy {
     this.subscriptions.push(_subscription);
   }
 
-  deleteAuthor(id:string) {
+  deleteAuthor(id: string) {
     let _subscription = this.adminService.deleteAuthor(id).subscribe({
       next: (data) => {
         console.log(data);

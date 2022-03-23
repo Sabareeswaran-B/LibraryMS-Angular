@@ -12,7 +12,7 @@ export class AdminGuard implements CanActivate, CanActivateChild {
             return true;
         }
 
-        this.router.navigateByUrl('/employee');
+        this.router.navigateByUrl('/employee/dashboard');
         return false;
     }
     canActivateChild() {
@@ -20,7 +20,7 @@ export class AdminGuard implements CanActivate, CanActivateChild {
             return true;
         }
 
-        this.router.navigateByUrl('/employee');
+        this.router.navigateByUrl('/employee/dashboard');
         return false;
     }
 }

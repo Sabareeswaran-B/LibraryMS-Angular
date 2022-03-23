@@ -1,0 +1,23 @@
+.navbar {
+    height: 56px;
+    background-color: #2196F3;
+    z-index: 1000;
+}
+
+.navbar-brand {
+    color: #fff;
+    margin-left: 20px;
+    font-size: 30px;
+    font-weight: 700;
+}
+
+
+
+@media screen and (max-width: 992px) {
+    .navbar {
+        height: 54px;
+    }
+    .navbar-brand {
+        font-size: 25px;
+    }
+}

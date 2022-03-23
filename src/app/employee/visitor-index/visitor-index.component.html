@@ -1,2 +1,215 @@
 <app-header></app-header>
-<p>visitor-index works!</p>
+<app-sidebar (collapsedEvent)="receiveCollapsed($event)"></app-sidebar>
+<section [ngClass]="{ collapsed: collapedSideBar }" class="main-container">
+    <kendo-grid [kendoGridBinding]="visitorsGridView" kendoGridSelectBy="visitorId" [(selectedKeys)]="selectedList"
+        [pageSize]="20" [pageable]="true" [sortable]="true" [groupable]="true" [reorderable]="true" [resizable]="true"
+        [height]="650" [columnMenu]="{ filter: true }" class="shadow m-3" style="border-radius: 20px">
+
+        <ng-template kendoGridToolbarTemplate>
+
+            <input class="w-25" placeholder="Search in all columns..." pInputText (input)="onFilter($event)" />
+
+            <kendo-grid-spacer></kendo-grid-spacer>
+
+            <button kendoGridExcelCommand type="button" icon="file-excel" pButton pRipple class="btn p-button-raised"
+                style="width: 15%;">
+                Export to Excel
+            </button>
+
+            <button kendoButton type="button" icon="add" pButton pRipple class="btn p-button-raised" style="width: 15%;"
+                (click)="showCreateDialog()">
+                Add a new visitor
+            </button>
+
+            <!-- <button kendoGridPDFCommand icon="file-pdf">Export to PDF</button> -->
+        </ng-template>
+
+        <kendo-grid-checkbox-column [width]="45" [headerClass]="{ 'text-center': true }"
+            [class]="{ 'text-center': true }" [resizable]="false" [columnMenu]="false" [showSelectAll]="true">
+        </kendo-grid-checkbox-column>
+
+        <kendo-grid-column-group title="visitors" [columnMenu]="false">
+
+            <!-- <kendo-grid-column field="visitorId" title="Id" [width]="220">
+            </kendo-grid-column> -->
+
+            <kendo-grid-column field="visitorName" title="Name" [width]="220">
+            </kendo-grid-column>
+
+            <kendo-grid-column field="visitorAge" title="Age" [width]="100" [class]="{ 'text-center': true }"
+                [resizable]="false">
+            </kendo-grid-column>
+
+            <kendo-grid-column field="visitorAddress" title="Address" [width]="100" [class]="{ 'text-center': true }">
+            </kendo-grid-column>
+
+            <kendo-grid-column field="visitorEmail" title="Email" [width]="220">
+            </kendo-grid-column>
+
+            <kendo-grid-column field="visitorPhoneNo" title="Phone" [width]="220">
+            </kendo-grid-column>
+
+            <kendo-grid-column field="isEmployee" title="Employee?" [width]="100" [class]="{ 'text-center': true }"
+                [resizable]="false">
+            </kendo-grid-column>
+
+            <kendo-grid-column field="isAuthor" title="Author?" [width]="100" [class]="{ 'text-center': true }">
+            </kendo-grid-column>
+
+            <kendo-grid-column field="visitorId" title="" [width]="100" [class]="{ 'text-center': true }"
+                [sortable]="false" [groupable]="false" [reorderable]="false" [resizable]="false">
+                <ng-template kendoGridCellTemplate let-dataItem>
+                    <button type="button" kendoButton icon="pencil" themeColor="primary" class="m-1 w-75"
+                        (click)="showUpdateDialog(dataItem.visitorId, dataItem)">Edit</button>
+                    <button type="button" kendoButton icon="delete" themeColor="error" class="m-1 w-75"
+                        (click)="deleteVisitor(dataItem.visitorId)">Delete</button>
+                </ng-template>
+            </kendo-grid-column>
+
+        </kendo-grid-column-group>
+
+        <kendo-grid-pdf fileName="Employees.pdf" [repeatHeaders]="true"></kendo-grid-pdf>
+        <kendo-grid-excel fileName="Employees.xlsx"></kendo-grid-excel>
+    </kendo-grid>
+
+
+    <!-- Edit Modal -->
+    <p-dialog header="Update visitor" [(visible)]="displayUpdateModal" [breakpoints]="{'960px': '75vw'}"
+        [style]="{width: '50vw'}" [draggable]="false" [resizable]="false">
+
+        <form [formGroup]="updateVisitorForm">
+
+            <!-- <div class="p-field my-4">
+            <span class="p-float-label">
+                <input type="text" id="visitorId" pInputText class="w-100" formControlName="visitorId" [disabled]="true">
+                <label for="visitorId">visitor Id</label>
+            </span>
+        </div> -->
+
+            <div class="p-field mb-4">
+                <span class="p-float-label">
+                    <input type="text" id="visitorName" pInputText class="w-100" formControlName="visitorName">
+                    <label for="visitorName">Visitor Name</label>
+                </span>
+            </div>
+
+            <div class="p-field mb-4">
+                <span class="p-float-label">
+                    <input type="number" id="visitorAge" pInputText class="w-100" formControlName="visitorAge">
+                    <label for="visitorAge">Visitor Age</label>
+                </span>
+            </div>
+
+            <div class="p-field mb-4">
+                <span class="p-float-label">
+                    <input type="text" id="visitorAddress" pInputText class="w-100" formControlName="visitorAddress">
+                    <label for="visitorAddress">Visitor Address</label>
+                </span>
+            </div>
+
+            <div class="p-field mb-4">
+                <span class="p-float-label">
+                    <input type="email" id="visitorEmail" pInputText class="w-100" formControlName="visitorEmail">
+                    <label for="visitorEmail">Visitor Email</label>
+                </span>
+            </div>
+
+            <div class="p-field mb-4">
+                <span class="p-float-label">
+                    <input type="tel" id="visitorPhoneNo" pInputText class="w-100" formControlName="visitorPhoneNo">
+                    <label for="visitorPhoneNo">Visitor PhoneNo</label>
+                </span>
+            </div>
+
+            <div class="p-field mb-4">
+                <span class="p-float-label">
+                    <input type="text" id="isEmployee" pInputText class="w-100" formControlName="isEmployee">
+                    <label for="isEmployee">isEmployee</label>
+                </span>
+            </div>
+
+            <div class="p-field mb-4">
+                <span class="p-float-label">
+                    <input type="text" id="isAuthor" pInputText class="w-100" formControlName="isAuthor">
+                    <label for="isAuthor">isAuthor</label>
+                </span>
+            </div>
+
+        </form>
+
+        <ng-template pTemplate="footer">
+            <p-button (click)="updateVisitor()" *ngIf="!updating;else loader" label="Update" styleClass="p-button-text">
+            </p-button>
+            <ng-template #loader>
+                <p-button [disabled]="true" styleClass="p-button-text"><i class="pi pi-spin pi-spinner"></i></p-button>
+            </ng-template>
+        </ng-template>
+
+    </p-dialog>
+
+    <!-- Add new Modal -->
+    <p-dialog header="Create visitor" [(visible)]="displayCreateModal" [breakpoints]="{'960px': '75vw'}"
+        [style]="{width: '50vw'}" [draggable]="false" [resizable]="false">
+
+        <form [formGroup]="addNewVisitorForm">
+            <div class="p-field mb-4">
+                <span class="p-float-label">
+                    <input type="text" id="visitorName" pInputText class="w-100" formControlName="visitorName">
+                    <label for="visitorName">Visitor Name</label>
+                </span>
+            </div>
+
+            <div class="p-field mb-4">
+                <span class="p-float-label">
+                    <input type="number" id="visitorAge" pInputText class="w-100" formControlName="visitorAge">
+                    <label for="visitorAge">Visitor Age</label>
+                </span>
+            </div>
+
+            <div class="p-field mb-4">
+                <span class="p-float-label">
+                    <input type="text" id="visitorAddress" pInputText class="w-100" formControlName="visitorAddress">
+                    <label for="visitorAddress">Visitor Address</label>
+                </span>
+            </div>
+
+            <div class="p-field mb-4">
+                <span class="p-float-label">
+                    <input type="email" id="visitorEmail" pInputText class="w-100" formControlName="visitorEmail">
+                    <label for="visitorEmail">Visitor Email</label>
+                </span>
+            </div>
+
+            <div class="p-field mb-4">
+                <span class="p-float-label">
+                    <input type="tel" id="visitorPhoneNo" pInputText class="w-100" formControlName="visitorPhoneNo">
+                    <label for="visitorPhoneNo">Visitor PhoneNo</label>
+                </span>
+            </div>
+
+            <div class="p-field mb-4">
+                <span class="p-float-label">
+                    <input type="text" id="isEmployee" pInputText class="w-100" formControlName="isEmployee">
+                    <label for="isEmployee">isEmployee</label>
+                </span>
+            </div>
+
+            <div class="p-field mb-4">
+                <span class="p-float-label">
+                    <input type="text" id="isAuthor" pInputText class="w-100" formControlName="isAuthor">
+                    <label for="isAuthor">isAuthor</label>
+                </span>
+            </div>
+
+        </form>
+
+        <ng-template pTemplate="footer">
+            <p-button (click)="addNewVisitor()" *ngIf="!adding;else loader" label="Create" styleClass="p-button-text">
+            </p-button>
+            <ng-template #loader>
+                <p-button [disabled]="true" styleClass="p-button-text"><i class="pi pi-spin pi-spinner"></i></p-button>
+            </ng-template>
+        </ng-template>
+
+    </p-dialog>
+</section>

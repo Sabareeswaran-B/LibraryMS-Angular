@@ -24,7 +24,7 @@ import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { LayoutModule } from "@progress/kendo-angular-layout";
 import { SidebarComponent } from './sidebar/sidebar.component';
-
+import { ToastrModule } from 'ngx-toastr';
 
 
 @NgModule({
@@ -42,6 +42,7 @@ import { SidebarComponent } from './sidebar/sidebar.component';
     SidebarComponent,
   ],
   imports: [
+    ToastrModule.forRoot(),
     FormsModule,
     CommonModule,
     EmployeeRouterModule,

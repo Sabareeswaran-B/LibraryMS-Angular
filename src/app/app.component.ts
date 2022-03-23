@@ -14,7 +14,7 @@ export class AppComponent implements OnInit, OnChanges {
   path: string | null | undefined;
   role!: Number;
 
-  constructor(private router: Router, private urlService: UrlService) { }
+  constructor(private router: Router, private urlService: UrlService,) { }
 
   ngOnChanges(changes: SimpleChanges): void {
     this.path = this.urlService.setPath();

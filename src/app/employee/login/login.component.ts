@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons';
+import { ToastrService } from 'ngx-toastr';
 import { Subject, Subscription, takeUntil } from 'rxjs';
 import { LoginResponse } from 'src/app/model/login.response';
 import { EmployeeService } from 'src/app/service/employee.service';
@@ -30,6 +31,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private router: Router,
     private employeeServices: EmployeeService,
+    private toastr: ToastrService
   ) { }
 
   ngOnDestroy(): void {
@@ -48,9 +50,6 @@ export class LoginComponent implements OnInit, OnDestroy {
     });
   }
 
-
-
-
   get f() { return this.loginForm.controls; }
 
   login(): void {
@@ -65,6 +64,7 @@ export class LoginComponent implements OnInit, OnDestroy {
           localStorage.setItem('isLoggedin', 'true');
           localStorage.setItem('role', response.role.toString());
           // if(response)
+          this.toastr.success(data['message' as keyof Object] as unknown as string)
           this.router.navigate([''], { replaceUrl: true });
         },
         error: (error) => {

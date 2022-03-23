@@ -25,54 +25,65 @@ export class EmployeeService {
 
   //Get all visitor in the database
   getAllVisitors() {
-    return this.httpClient.get(`${env.baseUrl}/visitor/getallvisitors`);
+    return this.httpClient.get(`${env.baseUrl}/visitor/getallvisitors`, { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } });
   }
 
   //Get a single visitor by his id
   getVisitorById(id: string) {
-    return this.httpClient.get(`${env.baseUrl}/visitor/getvisitorbyid/${id}`);
+    return this.httpClient.get(`${env.baseUrl}/visitor/getvisitorbyid/${id}`, { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } });
   }
 
   //Add a new visitor to the database
   addNewVisitor(visitor: Visitor) {
-    return this.httpClient.post(`${env.baseUrl}/visitor/addnewvisitor`, visitor);
+    return this.httpClient.post(`${env.baseUrl}/visitor/addnewvisitor`,
+      {
+        visitorName: visitor.visitorName,
+        visitorAge: visitor.visitorAge,
+        visitorAddress: visitor.visitorAddress,
+        visitorEmail: visitor.visitorEmail,
+        visitorPhoneNo: visitor.visitorPhoneNo,
+        isEmployee: visitor.isEmployee,
+        isAuthor: visitor.isAuthor,
+      },
+      { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } });
   }
 
   //Update the visitor info which is already exist in the database
   updateExistingVisitor(id: string, visitor: Visitor) {
-    return this.httpClient.post(`${env.baseUrl}/visitor/updateexistingvisitor/${id}`, visitor);
+    return this.httpClient.post(`${env.baseUrl}/visitor/updateexistingvisitor/${id}`, visitor,
+      { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } });
   }
 
   //delete the visitor from the database
   deleteVisitor(id: string) {
-    return this.httpClient.delete(`${env.baseUrl}/visitor/deletevisitor/${id}`);
+    return this.httpClient.delete(`${env.baseUrl}/visitor/deletevisitor/${id}`, { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } });
   }
 
   //lending Apis
 
   //Get all lending in the database
   getAllLendings() {
-    return this.httpClient.get(`${env.baseUrl}/lending/getalllendings`);
+    return this.httpClient.get(`${env.baseUrl}/lending/getalllendings`, { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } });
   }
 
   //Get a single lending by its id
   getLendingById(id: string) {
-    return this.httpClient.get(`${env.baseUrl}/lending/getlendingbyid/${id}`);
+    return this.httpClient.get(`${env.baseUrl}/lending/getlendingbyid/${id}`, { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } });
   }
 
   //Add a new lending to the database
   addNewLending(lending: Lending) {
-    return this.httpClient.post(`${env.baseUrl}/lending/addnewlending`, lending);
+    return this.httpClient.post(`${env.baseUrl}/lending/addnewlending`, lending, { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } });
   }
 
   //Update the lending info which is already exist in the database
   updateExistingLending(id: string, lending: Lending) {
-    return this.httpClient.post(`${env.baseUrl}/lending/updateexistinglending/${id}`, lending);
+    return this.httpClient.post(`${env.baseUrl}/lending/updateexistinglending/${id}`, lending, { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } });
   }
 
   //delete the lending from the database
   deleteLending(id: string) {
-    return this.httpClient.delete(`${env.baseUrl}/lending/deletelending/${id}`);
+    return this.httpClient.delete(`${env.baseUrl}/lending/deletelending/${id}`, { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } });
   }
 
 

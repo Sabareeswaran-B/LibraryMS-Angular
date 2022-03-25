@@ -12,3 +12,18 @@
 .collapsed {
     margin-left: 60px;
 }
+
+.add-card {
+    min-height: 250px;
+    border-radius: 10px;
+    background-color: #2196F3;
+}
+
+.add-card :active {
+    box-shadow: none;
+}
+
+.dash-card {
+    min-height: 250px;
+    border-radius: 10px;
+}

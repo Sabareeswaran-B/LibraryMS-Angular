@@ -10,7 +10,7 @@ import { InputTextModule } from "primeng/inputtext";
 import { InputNumberModule } from "primeng/inputnumber";
 import { CalendarModule } from "primeng/calendar";
 import { DateInputsModule } from '@progress/kendo-angular-dateinputs';
-import { GridModule,ExcelModule } from '@progress/kendo-angular-grid';
+import { GridModule, ExcelModule } from '@progress/kendo-angular-grid';
 import { PasswordModule } from "primeng/password";
 import { HomeAdminComponent } from './home.admin/home.admin.component';
 import { BookIndexComponent } from './book-index/book-index.component';
@@ -25,6 +25,12 @@ import { DropdownModule } from 'primeng/dropdown';
 import { LayoutModule } from "@progress/kendo-angular-layout";
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { ToastrModule } from 'ngx-toastr';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
+import { TableModule } from 'primeng/table';
+import { ToolbarModule } from 'primeng/toolbar';
+import { ChartsModule } from "@progress/kendo-angular-charts";
+
 
 
 @NgModule({
@@ -44,6 +50,9 @@ import { ToastrModule } from 'ngx-toastr';
   imports: [
     ToastrModule.forRoot(),
     FormsModule,
+    ToastModule,
+    TableModule,
+    ToolbarModule,
     CommonModule,
     EmployeeRouterModule,
     ReactiveFormsModule,
@@ -59,6 +68,7 @@ import { ToastrModule } from 'ngx-toastr';
     DialogModule,
     LayoutModule,
     DropdownModule,
+    ChartsModule,
   ],
   exports: [
     LoginComponent,
@@ -73,6 +83,7 @@ import { ToastrModule } from 'ngx-toastr';
     LendingIndexComponent,
     SidebarComponent,
   ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  providers: [MessageService,]
 })
 export class EmployeeModule { }

@@ -1,5 +1,90 @@
 <app-header></app-header>
 <app-sidebar (collapsedEvent)="receiveCollapsed($event)"></app-sidebar>
 <section [ngClass]="{ collapsed: collapedSideBar }" class="main-container">
-    <p>home works!</p>
+  <div class="row">
+    <div class="col-lg-4 col-md-6 col-sm-12">
+      <div class="card shadow-lg w-100 k-cursor-pointer justify-content-center align-items-center add-card" (click)="showCreateDialog()">
+        <div class="pi pi-plus mb-3 text-light" style="font-size: 70px;"></div>
+        <p class="text-light">Add a lending</p>
+      </div>
+    </div>
+    <div class="col-lg-4 col-md-6 col-sm-12">
+      <div class="card shadow w-100 justify-content-center align-items-center dash-card">
+        <p style="color: grey;">Number of titles in the library</p>
+        <h1 style="color: rgb(102, 64, 64);">{{ titles }}</h1>
+        <p style="color: grey;">Total books in the library</p>
+        <h1 style="color: rgb(102, 64, 64);">{{ copies }}</h1>
+      </div>
+    </div>
+    <div class="col-lg-4 col-md-6 col-sm-12">
+      <div class="card shadow w-100 justify-content-center align-items-center dash-card">
+        <p style="color: grey;">Number of outstanding lendings</p>
+        <h1 style="color: rgb(102, 64, 64);">{{ outStandingLendings }}</h1>
+        <p style="color: grey;">Number of lendings overdued</p>
+        <h1 style="color: rgb(102, 64, 64);">{{ overDuelendings.length }}</h1>
+      </div>
+    </div>
+  </div>
+  <div class="card shadow dash-card my-3 p-3">
+    <kendo-chart>
+      <kendo-chart-title text="Lendings graph"></kendo-chart-title>
+
+      <kendo-chart-category-axis>
+        <kendo-chart-category-axis-item
+          [categories]="['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec']"
+          [title]="{ text: 'Months' }">
+        </kendo-chart-category-axis-item>
+      </kendo-chart-category-axis>
+
+      <kendo-chart-series-defaults [highlight]="{ inactiveOpacity: 0.3 }">
+      </kendo-chart-series-defaults>
+
+      <kendo-chart-series>
+        <kendo-chart-series-item type="area" [data]="lendingsMonthVice">
+        </kendo-chart-series-item>
+      </kendo-chart-series>
+    </kendo-chart>
+    <!-- Add new Modal -->
+    <p-dialog header="Create lending" [(visible)]="displayCreateModal" [breakpoints]="{'960px': '75vw'}"
+      [style]="{width: '50vw'}" [draggable]="false" [resizable]="false">
+
+      <form [formGroup]="addNewLendingForm">
+
+        <div class="p-field mb-4">
+          <p-dropdown [options]="books" placeholder="Select a Book" optionLabel="bookName" formControlName="bookId"
+            class="w-100" [showClear]="true" [virtualScroll]="true"></p-dropdown>
+        </div>
+
+        <div class="p-field mb-4">
+          <p-dropdown [options]="visitors" placeholder="Select a Visitor" optionLabel="visitorName"
+            formControlName="visitorId" class="w-100" [showClear]="true" [virtualScroll]="true"></p-dropdown>
+        </div>
+
+        <div class="p-field mb-4">
+          <span class="p-float-label">
+            <input type="number" id="lendinglimit" pInputText class="w-100" formControlName="lendinglimit">
+            <label for="lendinglimit">Lending Limit</label>
+          </span>
+        </div>
+
+        <!-- <div class="field mb-4">
+            <label for="basic">Basic</label>
+            <p-calendar inputId="basic" formControlName="lendedOn"></p-calendar>
+        </div> -->
+
+      </form>
+
+      <ng-template pTemplate="footer">
+        <p-button (click)="addNewLending()" *ngIf="!adding;else loader" label="Create" styleClass="p-button-text">
+        </p-button>
+        <ng-template #loader>
+          <p-button [disabled]="true" styleClass="p-button-text"><i class="pi pi-spin pi-spinner"></i>
+          </p-button>
+        </ng-template>
+      </ng-template>
+
+    </p-dialog>
+  </div>
+  <br>
+  <br>
 </section>

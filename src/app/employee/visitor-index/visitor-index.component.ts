@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { Visitor } from 'src/app/model/visitor.model';
@@ -10,7 +10,7 @@ import { EmployeeService } from 'src/app/service/employee.service';
   templateUrl: './visitor-index.component.html',
   styleUrls: ['./visitor-index.component.css']
 })
-export class VisitorIndexComponent implements OnInit {
+export class VisitorIndexComponent implements OnInit, OnDestroy {
 
   visitors: Visitor[] = [];
   subscriptions: Subscription[] = [];
@@ -69,10 +69,7 @@ export class VisitorIndexComponent implements OnInit {
     let _subscription = this.employeeService.getAllVisitors().subscribe({
       next: (data) => {
         this.visitors = data['data' as keyof object] as Visitor[];
-        this.visitorsGridView = this.visitors;
-        this.visitors.map((visitor, index) => {
-          console.log(visitor.visitorName);
-        });
+        this.visitorsGridView = this.visitors;        
       },
       error: (err) => {
         console.log(err);

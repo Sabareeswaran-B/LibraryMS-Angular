@@ -1,2 +1,149 @@
 <app-header></app-header>
-<p>lending-index works!</p>
+<app-sidebar (collapsedEvent)="receiveCollapsed($event)"></app-sidebar>
+<section [ngClass]="{ collapsed: collapedSideBar }" class="main-container vh-100">
+    <div class="shadow-lg" style="border-radius: 25px;">
+        <p-toolbar styleClass="p-mb-4">
+            <ng-template pTemplate="left">
+                <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success p-mr-2" (click)="showCreateDialog()"></button>
+            </ng-template>
+
+            <ng-template pTemplate="right">
+                <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help"></button>
+            </ng-template>
+        </p-toolbar>
+
+        <p-table #dt [value]="lendingsGridView" [rows]="10" [paginator]="true" [rowHover]="true" dataKey="lendingId"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [showCurrentPageReport]="true">
+            <ng-template pTemplate="caption">
+                <div class="p-d-flex p-ai-center p-jc-between">
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-search"></i>
+                        <input pInputText type="text" (input)="filterGlobal($event)" placeholder="Search..." />
+                    </span>
+                </div>
+            </ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+                    <!-- <th pSortableColumn="lendingId">lendingId <p-sortIcon field="lendingId"></p-sortIcon>
+                    </th> -->
+                    <th pSortableColumn="visitor.visitorName">visitorId <p-sortIcon field="visitor.visitorName"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="book.bookName">Book name<p-sortIcon field="book.bookName"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="employee.employeeName">Employee name<p-sortIcon field="employee.employeeName"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="lendedOn">Date<p-sortIcon field="lendedOn"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="lendinglimit">No. of days<p-sortIcon field="lendinglimit"></p-sortIcon>
+                    </th>
+                    <th></th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-lending>
+                <tr>
+                    <!-- <td>
+                        <p-tableCheckbox [value]="product"></p-tableCheckbox>
+                    </td> -->
+                    <!-- <td>{{lending.lendingId}}</td> -->
+                    <td>{{lending.visitor.visitorName}}</td>
+                    <td>{{lending.book.bookName}}</td>
+                    <td>{{lending.employee.employeeName}}</td>
+                    <td>{{lending.lendedOn | date}}</td>
+                    <td>{{lending.lendinglimit}}</td>
+                    <td>
+                        <button pButton pRipple icon="pi pi-pencil"
+                            class="p-button-rounded p-button-success p-mr-2 mx-2" (click)="showUpdateDialog(lending.lendingId, lending)">
+                        </button>
+                        <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteLending(lending.lendingId)"></button>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+
+        <p-dialog header="Update lending" [(visible)]="displayUpdateModal" [breakpoints]="{'960px': '100vw'}"
+            [style]="{width: '50vw'}" [draggable]="false" [resizable]="false">
+
+            <form [formGroup]="updateLendingForm"> 
+                <div class="p-field mb-4">
+                    <p-dropdown [options]="books" placeholder="Select a Book"
+                        optionLabel="bookName" formControlName="bookId" class="w-100" [showClear]="true"
+                        [virtualScroll]="true"></p-dropdown>
+                </div>
+
+                <div class="p-field mb-4">
+                    <p-dropdown [options]="visitors" placeholder="Select a Visitor"
+                        optionLabel="visitorName" formControlName="visitorId" class="w-100" [showClear]="true"
+                        [virtualScroll]="true"></p-dropdown>
+                </div>
+
+                <!-- <div class="field mb-4">
+                    <p-calendar inputId="lendedOn" formControlName="lendedOn" placeholder="Date"></p-calendar>
+                </div> -->
+
+                <div class="p-field mb-4">
+                    <span class="p-float-label">
+                        <input type="number" id="lendinglimit" pInputText class="w-100" formControlName="lendinglimit">
+                        <label for="lendinglimit">Lending Limit</label>
+                    </span>
+                </div>
+
+            </form>
+
+            <ng-template pTemplate="footer">
+                <p-button (click)="updateLending()" *ngIf="!updating;else loader" label="Update"
+                    styleClass="p-button-text">
+                </p-button>
+                <ng-template #loader>
+                    <p-button [disabled]="true" styleClass="p-button-text"><i class="pi pi-spin pi-spinner"></i>
+                    </p-button>
+                </ng-template>
+            </ng-template>
+
+        </p-dialog>
+
+        <!-- Add new Modal -->
+        <p-dialog header="Create lending" [(visible)]="displayCreateModal" [breakpoints]="{'960px': '75vw'}"
+            [style]="{width: '50vw'}" [draggable]="false" [resizable]="false">
+
+            <form [formGroup]="addNewLendingForm">
+
+                <div class="p-field mb-4">
+                    <p-dropdown [options]="books" placeholder="Select a Book"
+                        optionLabel="bookName" formControlName="bookId" class="w-100" [showClear]="true"
+                        [virtualScroll]="true"></p-dropdown>
+                </div>
+
+                <div class="p-field mb-4">
+                    <p-dropdown [options]="visitors" placeholder="Select a Visitor"
+                        optionLabel="visitorName" formControlName="visitorId" class="w-100" [showClear]="true"
+                        [virtualScroll]="true"></p-dropdown>
+                </div>
+                
+                <div class="p-field mb-4">
+                    <span class="p-float-label">
+                        <input type="number" id="lendinglimit" pInputText class="w-100" formControlName="lendinglimit">
+                        <label for="lendinglimit">Lending Limit</label>
+                    </span>
+                </div>
+
+                <!-- <div class="field mb-4">
+                    <label for="basic">Basic</label>
+                    <p-calendar inputId="basic" formControlName="lendedOn"></p-calendar>
+                </div> -->
+
+            </form>
+
+            <ng-template pTemplate="footer">
+                <p-button (click)="addNewLending()" *ngIf="!adding;else loader" label="Create"
+                    styleClass="p-button-text">
+                </p-button>
+                <ng-template #loader>
+                    <p-button [disabled]="true" styleClass="p-button-text"><i class="pi pi-spin pi-spinner"></i>
+                    </p-button>
+                </ng-template>
+            </ng-template>
+
+        </p-dialog>
+    </div>
+</section>

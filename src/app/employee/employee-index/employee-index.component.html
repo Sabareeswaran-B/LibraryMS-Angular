@@ -28,7 +28,7 @@
             [class]="{ 'text-center': true }" [resizable]="false" [columnMenu]="false" [showSelectAll]="true">
         </kendo-grid-checkbox-column>
 
-        <kendo-grid-column-group title="employees" [columnMenu]="false">
+        <!-- <kendo-grid-column-group title="employees" [columnMenu]="false"> -->
 
             <!-- <kendo-grid-column field="employeeId" title="Id" [width]="220">
         </kendo-grid-column> -->
@@ -57,14 +57,14 @@
             <kendo-grid-column field="employeeId" title="" [width]="100" [class]="{ 'text-center': true }"
                 [sortable]="false" [groupable]="false" [reorderable]="false" [resizable]="false">
                 <ng-template kendoGridCellTemplate let-dataItem>
-                    <button type="button" kendoButton icon="pencil" themeColor="primary" class="m-1 w-75"
-                        (click)="showUpdateDialog(dataItem.employeeId, dataItem)">Edit</button>
-                    <button type="button" kendoButton icon="delete" themeColor="error" class="m-1 w-75"
-                        (click)="deleteemployee(dataItem.employeeId)">Delete</button>
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2 mx-2"
+                        (click)="showUpdateDialog(dataItem.employeeId, dataItem)"></button>
+                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning p-mr-2 mx-2"
+                        (click)="deleteemployee(dataItem.employeeId)"></button>
                 </ng-template>
             </kendo-grid-column>
 
-        </kendo-grid-column-group>
+        <!-- </kendo-grid-column-group> -->
 
         <kendo-grid-pdf fileName="Employees.pdf" [repeatHeaders]="true"></kendo-grid-pdf>
         <kendo-grid-excel fileName="Employees.xlsx"></kendo-grid-excel>

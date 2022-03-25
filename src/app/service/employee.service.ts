@@ -50,7 +50,7 @@ export class EmployeeService {
 
   //Update the visitor info which is already exist in the database
   updateExistingVisitor(id: string, visitor: Visitor) {
-    return this.httpClient.post(`${env.baseUrl}/visitor/updateexistingvisitor/${id}`, visitor,
+    return this.httpClient.put(`${env.baseUrl}/visitor/updateexistingvisitor/${id}`, visitor,
       { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } });
   }
 
@@ -73,12 +73,17 @@ export class EmployeeService {
 
   //Add a new lending to the database
   addNewLending(lending: Lending) {
-    return this.httpClient.post(`${env.baseUrl}/lending/addnewlending`, lending, { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } });
+    return this.httpClient.post(`${env.baseUrl}/lending/addnewlending`, {
+      bookId: lending.bookId,
+      visitorId: lending.visitorId,
+      employeeId: lending.employeeId,
+      lendinglimit: lending.lendinglimit.toString()
+    }, { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } });
   }
 
   //Update the lending info which is already exist in the database
   updateExistingLending(id: string, lending: Lending) {
-    return this.httpClient.post(`${env.baseUrl}/lending/updateexistinglending/${id}`, lending, { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } });
+    return this.httpClient.put(`${env.baseUrl}/lending/updateexistinglending/${id}`, lending, { headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } });
   }
 
   //delete the lending from the database

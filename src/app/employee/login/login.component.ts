@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons';
 import { ToastrService } from 'ngx-toastr';
+import { MessageService } from 'primeng/api';
 import { Subject, Subscription, takeUntil } from 'rxjs';
 import { LoginResponse } from 'src/app/model/login.response';
 import { EmployeeService } from 'src/app/service/employee.service';
@@ -11,7 +12,8 @@ import { EmployeeService } from 'src/app/service/employee.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'],
+  providers: []
 })
 export class LoginComponent implements OnInit, OnDestroy {
 
@@ -31,7 +33,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private router: Router,
     private employeeServices: EmployeeService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private messageService: MessageService,
   ) { }
 
   ngOnDestroy(): void {
@@ -58,13 +61,14 @@ export class LoginComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (data) => {
           var response: LoginResponse = data['data' as keyof Object] as unknown as LoginResponse;
-          this.isLoading = false;
+          this.isLoading = false; 
           localStorage.setItem('token', response.token);
           localStorage.setItem('id', response.id);
           localStorage.setItem('isLoggedin', 'true');
           localStorage.setItem('role', response.role.toString());
-          // if(response)
-          this.toastr.success(data['message' as keyof Object] as unknown as string)
+          // this.toastr.success(data['message' as keyof Object] as unknown as string);
+          let message = data['message' as keyof Object] as unknown as string
+          this.messageService.add({ severity: 'success', summary: message });
           this.router.navigate([''], { replaceUrl: true });
         },
         error: (error) => {

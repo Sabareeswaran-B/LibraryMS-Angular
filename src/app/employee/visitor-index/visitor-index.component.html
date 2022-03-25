@@ -1,34 +1,35 @@
 <app-header></app-header>
 <app-sidebar (collapsedEvent)="receiveCollapsed($event)"></app-sidebar>
-<section [ngClass]="{ collapsed: collapedSideBar }" class="main-container">
-    <kendo-grid [kendoGridBinding]="visitorsGridView" kendoGridSelectBy="visitorId" [(selectedKeys)]="selectedList"
-        [pageSize]="20" [pageable]="true" [sortable]="true" [groupable]="true" [reorderable]="true" [resizable]="true"
-        [height]="650" [columnMenu]="{ filter: true }" class="shadow m-3" style="border-radius: 20px">
+<section [ngClass]="{ collapsed: collapedSideBar }" class="main-container vh-100">
+    <!-- <div class="table-container shadow-lg"> -->
+        <kendo-grid [kendoGridBinding]="visitorsGridView" kendoGridSelectBy="visitorId" [(selectedKeys)]="selectedList"
+            [pageSize]="20" [pageable]="true" [sortable]="true" [groupable]="true" [reorderable]="true"
+            [resizable]="true" [height]="650" [columnMenu]="{ filter: true }">
 
-        <ng-template kendoGridToolbarTemplate>
+            <ng-template kendoGridToolbarTemplate>
 
-            <input class="w-25" placeholder="Search in all columns..." pInputText (input)="onFilter($event)" />
+                <input class="w-25" placeholder="Search in all columns..." pInputText (input)="onFilter($event)" />
 
-            <kendo-grid-spacer></kendo-grid-spacer>
+                <kendo-grid-spacer></kendo-grid-spacer>
 
-            <button kendoGridExcelCommand type="button" icon="file-excel" pButton pRipple class="btn p-button-raised"
-                style="width: 15%;">
-                Export to Excel
-            </button>
+                <button kendoGridExcelCommand type="button" icon="file-excel" pButton pRipple
+                    class="btn p-button-raised" style="width: 15%;">
+                    Export to Excel
+                </button>
 
-            <button kendoButton type="button" icon="add" pButton pRipple class="btn p-button-raised" style="width: 15%;"
-                (click)="showCreateDialog()">
-                Add a new visitor
-            </button>
+                <button kendoButton type="button" icon="add" pButton pRipple class="btn p-button-raised"
+                    style="width: 15%;" (click)="showCreateDialog()">
+                    Add a new visitor
+                </button>
 
-            <!-- <button kendoGridPDFCommand icon="file-pdf">Export to PDF</button> -->
-        </ng-template>
+                <!-- <button kendoGridPDFCommand icon="file-pdf">Export to PDF</button> -->
+            </ng-template>
 
-        <kendo-grid-checkbox-column [width]="45" [headerClass]="{ 'text-center': true }"
-            [class]="{ 'text-center': true }" [resizable]="false" [columnMenu]="false" [showSelectAll]="true">
-        </kendo-grid-checkbox-column>
+            <kendo-grid-checkbox-column [width]="45" [headerClass]="{ 'text-center': true }"
+                [class]="{ 'text-center': true }" [resizable]="false" [columnMenu]="false" [showSelectAll]="true">
+            </kendo-grid-checkbox-column>
 
-        <kendo-grid-column-group title="visitors" [columnMenu]="false">
+            <!-- <kendo-grid-column-group title="visitors" [columnMenu]="false"> -->
 
             <!-- <kendo-grid-column field="visitorId" title="Id" [width]="220">
             </kendo-grid-column> -->
@@ -59,18 +60,19 @@
             <kendo-grid-column field="visitorId" title="" [width]="100" [class]="{ 'text-center': true }"
                 [sortable]="false" [groupable]="false" [reorderable]="false" [resizable]="false">
                 <ng-template kendoGridCellTemplate let-dataItem>
-                    <button type="button" kendoButton icon="pencil" themeColor="primary" class="m-1 w-75"
-                        (click)="showUpdateDialog(dataItem.visitorId, dataItem)">Edit</button>
-                    <button type="button" kendoButton icon="delete" themeColor="error" class="m-1 w-75"
-                        (click)="deleteVisitor(dataItem.visitorId)">Delete</button>
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2 mx-2"
+                        (click)="showUpdateDialog(dataItem.visitorId, dataItem)"></button>
+                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning p-mr-2 mx-2"
+                        (click)="deleteVisitor(dataItem.visitorId)"></button>
                 </ng-template>
             </kendo-grid-column>
 
-        </kendo-grid-column-group>
+            <!-- </kendo-grid-column-group> -->
 
-        <kendo-grid-pdf fileName="Employees.pdf" [repeatHeaders]="true"></kendo-grid-pdf>
-        <kendo-grid-excel fileName="Employees.xlsx"></kendo-grid-excel>
-    </kendo-grid>
+            <kendo-grid-pdf fileName="Employees.pdf" [repeatHeaders]="true"></kendo-grid-pdf>
+            <kendo-grid-excel fileName="Employees.xlsx"></kendo-grid-excel>
+        </kendo-grid>
+    <!-- </div> -->
 
 
     <!-- Edit Modal -->

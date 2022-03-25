@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -13,10 +13,10 @@ import { GridModule, ExcelModule } from '@progress/kendo-angular-grid';
 import { DateInputsModule } from '@progress/kendo-angular-dateinputs';
 import { HttpClientModule } from '@angular/common/http';
 import { LayoutModule } from '@progress/kendo-angular-layout';
-
-
-
-
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
+// import { ChartsModule } from '@progress/kendo-angular-charts';
+import 'hammerjs';
 
 
 @NgModule({
@@ -25,6 +25,7 @@ import { LayoutModule } from '@progress/kendo-angular-layout';
     HomepageComponent
   ],
   imports: [
+    ToastModule,
     CommonModule,
     BrowserModule,
     AppRoutingModule,
@@ -38,8 +39,10 @@ import { LayoutModule } from '@progress/kendo-angular-layout';
     HttpClientModule,
     ExcelModule,
     LayoutModule,
+    // ChartsModule,
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [MessageService],
+  bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule { }

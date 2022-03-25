@@ -78,9 +78,6 @@ export class EmployeeIndexComponent implements OnInit, OnDestroy {
       next: (data) => {
         this.employees = data['data' as keyof object] as Employee[];
         this.employeesGridView = this.employees;
-        this.employees.map((employee, index) => {
-          console.log(employee.employeeName);
-        });
       },
       error: (err) => {
         console.log(err);

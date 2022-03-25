@@ -6,6 +6,8 @@ import { Employee } from 'src/app/model/employee.model';
 import { Lending } from 'src/app/model/lending.model';
 import { Visitor } from 'src/app/model/visitor.model';
 import { EmployeeService } from 'src/app/service/employee.service';
+import { MenuItem } from 'primeng/api';
+
 
 @Component({
   selector: 'app-lending-index',
@@ -68,6 +70,22 @@ export class LendingIndexComponent implements OnInit, OnDestroy {
   receiveCollapsed($event: boolean) {
     this.collapedSideBar = $event;
   }
+
+  adminMenuItems: MenuItem[] = [
+    { label: 'Dashboard', icon: 'pi pi-th-large', routerLink: '/admin/dashboard' },
+    { label: 'Author', icon: 'pi pi-pencil', routerLink: '/admin/author' },
+    { label: 'Book', icon: 'pi pi-book', routerLink: '/admin/book' },
+    { label: 'Employee', icon: 'pi pi-id-card', routerLink: '/admin/employee' },
+    { label: 'Visitor', icon: 'pi pi-user', routerLink: '/admin/visitor' },
+    { label: 'Lending', icon: 'pi pi-star', routerLink: '/admin/lending' },
+    { label: 'Logout', icon: 'k-icon k-i-undo', routerLink: '/login' },
+  ];
+  employeeMenuItems: MenuItem[] = [
+    { label: 'Dashboard', icon: 'pi pi-th-large', routerLink: '/employee/dashboard' },
+    { label: 'Visitor', icon: 'pi pi-user', routerLink: '/employee/visitor' },
+    { label: 'Lending', icon: 'pi pi-star', routerLink: '/employee/lending' },
+    { label: 'Logout', icon: 'k-icon k-i-undo', routerLink: '/login' },
+  ];
 
   getAllLendings() {
     let _subscription = this.employeeService.getAllLendings().subscribe({

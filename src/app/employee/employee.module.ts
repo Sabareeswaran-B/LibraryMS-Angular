@@ -30,6 +30,7 @@ import { MessageService } from 'primeng/api';
 import { TableModule } from 'primeng/table';
 import { ToolbarModule } from 'primeng/toolbar';
 import { ChartsModule } from "@progress/kendo-angular-charts";
+import { NgSidenavModule } from 'ng-sidenav';
 
 
 
@@ -69,6 +70,7 @@ import { ChartsModule } from "@progress/kendo-angular-charts";
     LayoutModule,
     DropdownModule,
     ChartsModule,
+    NgSidenavModule
   ],
   exports: [
     LoginComponent,

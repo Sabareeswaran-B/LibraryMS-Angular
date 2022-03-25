@@ -6,6 +6,8 @@ import { AdminService } from 'src/app/service/admin.service';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons';
 import { Subscription } from 'rxjs';
+import { MenuItem } from 'primeng/api';
+
 
 @Component({
   selector: 'app-employee-index',
@@ -33,6 +35,22 @@ export class EmployeeIndexComponent implements OnInit, OnDestroy {
   receiveCollapsed($event: boolean) {
     this.collapedSideBar = $event;
   }
+
+  adminMenuItems: MenuItem[] = [
+    { label: 'Dashboard', icon: 'pi pi-th-large', routerLink: '/admin/dashboard' },
+    { label: 'Author', icon: 'pi pi-pencil', routerLink: '/admin/author' },
+    { label: 'Book', icon: 'pi pi-book', routerLink: '/admin/book' },
+    { label: 'Employee', icon: 'pi pi-id-card', routerLink: '/admin/employee' },
+    { label: 'Visitor', icon: 'pi pi-user', routerLink: '/admin/visitor' },
+    { label: 'Lending', icon: 'pi pi-star', routerLink: '/admin/lending' },
+    { label: 'Logout', icon: 'k-icon k-i-undo', routerLink: '/login' },
+  ];
+  employeeMenuItems: MenuItem[] = [
+    { label: 'Dashboard', icon: 'pi pi-th-large', routerLink: '/employee/dashboard' },
+    { label: 'Visitor', icon: 'pi pi-user', routerLink: '/employee/visitor' },
+    { label: 'Lending', icon: 'pi pi-star', routerLink: '/employee/lending' },
+    { label: 'Logout', icon: 'k-icon k-i-undo', routerLink: '/login' },
+  ];
 
 
   constructor(private adminService: AdminService, private formBuilder: FormBuilder,) { }

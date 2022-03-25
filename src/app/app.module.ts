@@ -17,6 +17,7 @@ import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 // import { ChartsModule } from '@progress/kendo-angular-charts';
 import 'hammerjs';
+import { NgSidenavModule } from 'ng-sidenav';
 
 
 @NgModule({
@@ -39,6 +40,7 @@ import 'hammerjs';
     HttpClientModule,
     ExcelModule,
     LayoutModule,
+    NgSidenavModule,
     // ChartsModule,
   ],
   providers: [MessageService],

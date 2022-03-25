@@ -5,6 +5,7 @@ import { AdminService } from 'src/app/service/admin.service';
 import { process } from "@progress/kendo-data-query";
 import { Author } from 'src/app/model/author.model';
 import { Subscription } from 'rxjs';
+import { MenuItem } from 'primeng/api';
 
 
 @Component({
@@ -56,6 +57,22 @@ export class BookIndexComponent implements OnInit, OnDestroy {
 
     this.getAllBooks();
   }
+
+  adminMenuItems: MenuItem[] = [
+    { label: 'Dashboard', icon: 'pi pi-th-large', routerLink: '/admin/dashboard' },
+    { label: 'Author', icon: 'pi pi-pencil', routerLink: '/admin/author' },
+    { label: 'Book', icon: 'pi pi-book', routerLink: '/admin/book' },
+    { label: 'Employee', icon: 'pi pi-id-card', routerLink: '/admin/employee' },
+    { label: 'Visitor', icon: 'pi pi-user', routerLink: '/admin/visitor' },
+    { label: 'Lending', icon: 'pi pi-star', routerLink: '/admin/lending' },
+    { label: 'Logout', icon: 'k-icon k-i-undo', routerLink: '/login' },
+  ];
+  employeeMenuItems: MenuItem[] = [
+    { label: 'Dashboard', icon: 'pi pi-th-large', routerLink: '/employee/dashboard' },
+    { label: 'Visitor', icon: 'pi pi-user', routerLink: '/employee/visitor' },
+    { label: 'Lending', icon: 'pi pi-star', routerLink: '/employee/lending' },
+    { label: 'Logout', icon: 'k-icon k-i-undo', routerLink: '/login' },
+  ];
 
   ngOnDestroy(): void {
     this.subscriptions.map((x) => {

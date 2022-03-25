@@ -1,6 +1,7 @@
 <!-- <div class="container table-container shadow-lg"> -->
 <app-header></app-header>
-<app-sidebar (collapsedEvent)="receiveCollapsed($event)"></app-sidebar>
+<!-- <app-sidebar (collapsedEvent)="receiveCollapsed($event)"></app-sidebar> -->
+<ng-sidenav (collapsedEvent)="receiveCollapsed($event)" [adminMenuItems]="adminMenuItems" [employeeMenuItems]="employeeMenuItems"></ng-sidenav>
 <section [ngClass]="{ collapsed: collapedSideBar }" class="main-container">
     <kendo-grid [kendoGridBinding]="booksGridView" kendoGridSelectBy="bookId" [(selectedKeys)]="selectedList"
         [pageSize]="20" [pageable]="true" [sortable]="true" [groupable]="true" [reorderable]="true" [resizable]="true"

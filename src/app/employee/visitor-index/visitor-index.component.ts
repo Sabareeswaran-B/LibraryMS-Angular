@@ -4,6 +4,8 @@ import { Subscription } from 'rxjs';
 import { Visitor } from 'src/app/model/visitor.model';
 import { process } from "@progress/kendo-data-query";
 import { EmployeeService } from 'src/app/service/employee.service';
+import { MenuItem } from 'primeng/api';
+
 
 @Component({
   selector: 'app-visitor-index',
@@ -38,6 +40,22 @@ export class VisitorIndexComponent implements OnInit, OnDestroy {
       }
     })
   }
+
+  adminMenuItems: MenuItem[] = [
+    { label: 'Dashboard', icon: 'pi pi-th-large', routerLink: '/admin/dashboard' },
+    { label: 'Author', icon: 'pi pi-pencil', routerLink: '/admin/author' },
+    { label: 'Book', icon: 'pi pi-book', routerLink: '/admin/book' },
+    { label: 'Employee', icon: 'pi pi-id-card', routerLink: '/admin/employee' },
+    { label: 'Visitor', icon: 'pi pi-user', routerLink: '/admin/visitor' },
+    { label: 'Lending', icon: 'pi pi-star', routerLink: '/admin/lending' },
+    { label: 'Logout', icon: 'k-icon k-i-undo', routerLink: '/login' },
+  ];
+  employeeMenuItems: MenuItem[] = [
+    { label: 'Dashboard', icon: 'pi pi-th-large', routerLink: '/employee/dashboard' },
+    { label: 'Visitor', icon: 'pi pi-user', routerLink: '/employee/visitor' },
+    { label: 'Lending', icon: 'pi pi-star', routerLink: '/employee/lending' },
+    { label: 'Logout', icon: 'k-icon k-i-undo', routerLink: '/login' },
+  ];
 
   ngOnInit(): void {
     this.updateVisitorForm = this.formBuilder.group({

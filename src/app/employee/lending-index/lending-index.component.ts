@@ -235,4 +235,13 @@ export class LendingIndexComponent implements OnInit, OnDestroy {
     this.subscriptions.push(_subscription);
   }
 
+  calculateOverDue(dateSent: any, limit: string) {
+    let currentDate = new Date();
+    dateSent = new Date(dateSent);
+
+    let currentLimit =  Math.floor((Date.UTC(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate()) - Date.UTC(dateSent.getFullYear(), dateSent.getMonth(), dateSent.getDate())) / (1000 * 60 * 60 * 24));
+    return currentLimit > Number.parseInt(limit);
+  
+  }
+
 }

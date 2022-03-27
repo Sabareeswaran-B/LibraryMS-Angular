@@ -38,6 +38,7 @@
                     </th>
                     <th pSortableColumn="lendinglimit">No. of days<p-sortIcon field="lendinglimit"></p-sortIcon>
                     </th>
+                    <th>Is limit exeeded</th>
                     <th></th>
                 </tr>
             </ng-template>
@@ -52,6 +53,7 @@
                     <td>{{lending.employee.employeeName}}</td>
                     <td>{{lending.lendedOn | date}}</td>
                     <td>{{lending.lendinglimit}}</td>
+                    <td>{{calculateOverDue(lending.lendedOn, lending.lendinglimit)}}</td>
                     <td>
                         <button pButton pRipple icon="pi pi-pencil"
                             class="p-button-rounded p-button-success p-mr-2 mx-2" (click)="showUpdateDialog(lending.lendingId, lending)">

@@ -1,7 +1,9 @@
 <!-- <div class="container table-container shadow-lg"> -->
+<p-toast></p-toast>
 <app-header></app-header>
 <!-- <app-sidebar (collapsedEvent)="receiveCollapsed($event)"></app-sidebar> -->
-<ng-sidenav (collapsedEvent)="receiveCollapsed($event)" [adminMenuItems]="adminMenuItems" [employeeMenuItems]="employeeMenuItems"></ng-sidenav>
+<ng-sidenav (collapsedEvent)="receiveCollapsed($event)" [adminMenuItems]="adminMenuItems"
+    [employeeMenuItems]="employeeMenuItems"></ng-sidenav>
 <section [ngClass]="{ collapsed: collapedSideBar }" class="main-container">
     <kendo-grid [kendoGridBinding]="booksGridView" kendoGridSelectBy="bookId" [(selectedKeys)]="selectedList"
         [pageSize]="20" [pageable]="true" [sortable]="true" [groupable]="true" [reorderable]="true" [resizable]="true"
@@ -32,35 +34,34 @@
 
         <!-- <kendo-grid-column-group title="books" [columnMenu]="false"> -->
 
-            <!-- <kendo-grid-column field="bookId" title="Id" [width]="220">
+        <!-- <kendo-grid-column field="bookId" title="Id" [width]="220">
         </kendo-grid-column> -->
 
-            <kendo-grid-column field="bookName" title="Name" [width]="220">
-            </kendo-grid-column>
+        <kendo-grid-column field="bookName" title="Name" [width]="220">
+        </kendo-grid-column>
 
-            <kendo-grid-column field="author.authorName" title="Author" [width]="100" [class]="{ 'text-center': true }"
-                [resizable]="false">
-            </kendo-grid-column>
+        <kendo-grid-column field="author.authorName" title="Author" [width]="100" [class]="{ 'text-center': true }"
+            [resizable]="false">
+        </kendo-grid-column>
 
-            <kendo-grid-column field="language" title="Language" [width]="100" [class]="{ 'text-center': true }">
-            </kendo-grid-column>
-            <kendo-grid-column field="releasedYear" title="Year of release" [width]="100"
-                [class]="{ 'text-center': true }">
-            </kendo-grid-column>
-            <kendo-grid-column field="edition" title="Edition" [width]="100" [class]="{ 'text-center': true }">
-            </kendo-grid-column>
-            <kendo-grid-column field="copiesAvailable" title="Stocks" [width]="100" [class]="{ 'text-center': true }">
-            </kendo-grid-column>
+        <kendo-grid-column field="language" title="Language" [width]="100" [class]="{ 'text-center': true }">
+        </kendo-grid-column>
+        <kendo-grid-column field="releasedYear" title="Year of release" [width]="100" [class]="{ 'text-center': true }">
+        </kendo-grid-column>
+        <kendo-grid-column field="edition" title="Edition" [width]="100" [class]="{ 'text-center': true }">
+        </kendo-grid-column>
+        <kendo-grid-column field="copiesAvailable" title="Stocks" [width]="100" [class]="{ 'text-center': true }">
+        </kendo-grid-column>
 
-            <kendo-grid-column field="bookId" title="" [width]="100" [class]="{ 'text-center': true }"
-                [sortable]="false" [groupable]="false" [reorderable]="false" [resizable]="false">
-                <ng-template kendoGridCellTemplate let-dataItem>
-                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2 mx-2"
-                        (click)="showUpdateDialog(dataItem)"></button>
-                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning p-mr-2 mx-2"
-                        (click)="deleteBook(dataItem.bookId)"></button>
-                </ng-template> 
-            </kendo-grid-column>
+        <kendo-grid-column field="bookId" title="" [width]="100" [class]="{ 'text-center': true }" [sortable]="false"
+            [groupable]="false" [reorderable]="false" [resizable]="false">
+            <ng-template kendoGridCellTemplate let-dataItem>
+                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2 mx-2"
+                    (click)="showUpdateDialog(dataItem)"></button>
+                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning p-mr-2 mx-2"
+                    (click)="deleteBook(dataItem.bookId)"></button>
+            </ng-template>
+        </kendo-grid-column>
 
         <!-- </kendo-grid-column-group> -->
 
@@ -90,9 +91,8 @@
             </div>
 
             <div class="p-field mb-4">
-                <p-dropdown [options]="authors" placeholder="Select a Author"
-                    optionLabel="authorName" formControlName="authorId" class="w-100" [showClear]="true"
-                    [virtualScroll]="true"></p-dropdown>
+                <p-dropdown [options]="authors" placeholder="Select a Author" optionLabel="authorName"
+                    formControlName="authorId" class="w-100" [showClear]="true" [virtualScroll]="true"></p-dropdown>
             </div>
 
             <div class="p-field mb-4">
@@ -148,9 +148,8 @@
             </div>
 
             <div class="p-field mb-4">
-                <p-dropdown [options]="authors" placeholder="Select a Author"
-                    optionLabel="authorName" formControlName="authorId" class="w-100" [showClear]="true"
-                    [virtualScroll]="true"></p-dropdown>
+                <p-dropdown [options]="authors" placeholder="Select a Author" optionLabel="authorName"
+                    formControlName="authorId" class="w-100" [showClear]="true" [virtualScroll]="true"></p-dropdown>
             </div>
 
             <div class="p-field mb-4">

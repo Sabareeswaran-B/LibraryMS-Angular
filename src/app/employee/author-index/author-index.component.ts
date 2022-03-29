@@ -4,7 +4,7 @@ import { process } from "@progress/kendo-data-query";
 import { Author } from 'src/app/model/author.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { MenuItem } from 'primeng/api';
+import { MenuItem, MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-author-index',
@@ -24,10 +24,10 @@ export class AuthorIndexComponent implements OnInit, OnDestroy {
 
   public selectedList: string[] = [];
 
-  constructor(private adminService: AdminService, private formBuilder: FormBuilder,) { }
+  constructor(private adminService: AdminService, private formBuilder: FormBuilder, private messageService: MessageService) { }
 
   collapedSideBar!: boolean;
-  
+
   receiveCollapsed($event: boolean) {
     this.collapedSideBar = $event;
   }
@@ -142,6 +142,8 @@ export class AuthorIndexComponent implements OnInit, OnDestroy {
     let _subscription = this.adminService.updateExistingAuthor(this.selectedId, this.updateAuthorForm.value).subscribe({
       next: (data) => {
         console.log(data);
+        let message = data['message' as keyof Object] as unknown as string
+        this.messageService.add({ severity: 'success', summary: message });
         this.updating = false;
         this.displayUpdateModal = false;
         this.updateAuthorForm.reset();
@@ -151,6 +153,8 @@ export class AuthorIndexComponent implements OnInit, OnDestroy {
         console.log(err);
         this.updating = false;
         this.displayUpdateModal = false;
+        let message = err.error.message as unknown as string
+        this.messageService.add({ severity: 'error', summary: message });
       }
     })
     this.subscriptions.push(_subscription);
@@ -165,11 +169,15 @@ export class AuthorIndexComponent implements OnInit, OnDestroy {
         this.displayCreateModal = false;
         this.addNewAuthorForm.reset();
         this.getAllAuthors();
+        let message = data['message' as keyof Object] as unknown as string
+        this.messageService.add({ severity: 'success', summary: message });
       },
       error: (err) => {
         console.log(err);
         this.adding = false;
         this.displayCreateModal = false;
+        let message = err.error.message as unknown as string
+        this.messageService.add({ severity: 'success', summary: message });
       }
     })
     this.subscriptions.push(_subscription);
@@ -180,9 +188,13 @@ export class AuthorIndexComponent implements OnInit, OnDestroy {
       next: (data) => {
         console.log(data);
         this.getAllAuthors();
+        let message = data['message' as keyof Object] as unknown as string
+        this.messageService.add({ severity: 'success', summary: message });
       },
       error: (err) => {
         console.log(err);
+        let message = err.error.message as unknown as string
+        this.messageService.add({ severity: 'success', summary: message });
       }
     })
     this.subscriptions.push(_subscription);

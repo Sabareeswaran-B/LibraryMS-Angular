@@ -5,7 +5,7 @@ import { AdminService } from 'src/app/service/admin.service';
 import { process } from "@progress/kendo-data-query";
 import { Author } from 'src/app/model/author.model';
 import { Subscription } from 'rxjs';
-import { MenuItem } from 'primeng/api';
+import { MenuItem, MessageService } from 'primeng/api';
 
 
 @Component({
@@ -33,7 +33,7 @@ export class BookIndexComponent implements OnInit, OnDestroy {
     this.collapedSideBar = $event;
   }
 
-  constructor(private adminService: AdminService, private formBuilder: FormBuilder,) { }
+  constructor(private adminService: AdminService, private formBuilder: FormBuilder, private messageService: MessageService) { }
 
   ngOnInit(): void {
     this.updateBookForm = this.formBuilder.group({
@@ -181,12 +181,16 @@ export class BookIndexComponent implements OnInit, OnDestroy {
         this.updating = false;
         this.displayUpdateModal = false;
         this.updateBookForm.reset();
+        let message = data['message' as keyof Object] as unknown as string
+        this.messageService.add({ severity: 'success', summary: message });
         this.getAllBooks();
       },
       error: (err) => {
         console.log(err);
         this.updating = false;
         this.displayUpdateModal = false;
+        let message = err.error.message as unknown as string
+        this.messageService.add({ severity: 'success', summary: message });
       }
     });
     this.subscriptions.push(_subscription);
@@ -203,12 +207,16 @@ export class BookIndexComponent implements OnInit, OnDestroy {
         this.adding = false;
         this.displayCreateModal = false;
         this.addNewBookForm.reset();
+        let message = data['message' as keyof Object] as unknown as string
+        this.messageService.add({ severity: 'success', summary: message });
         this.getAllBooks();
       },
       error: (err) => {
         console.log(err);
         this.adding = false;
         this.displayCreateModal = false;
+        let message = err.error.message as unknown as string
+        this.messageService.add({ severity: 'success', summary: message });
       }
     });
     this.subscriptions.push(_subscription);
@@ -218,9 +226,13 @@ export class BookIndexComponent implements OnInit, OnDestroy {
     let _subscription = this.adminService.deleteBook(id).subscribe({
       next: (data) => {
         console.log(data);
+        let message = data['message' as keyof Object] as unknown as string
+        this.messageService.add({ severity: 'success', summary: message });
         this.getAllBooks();
       },
       error: (err) => {
+        let message = err.error.message as unknown as string
+        this.messageService.add({ severity: 'success', summary: message });
         console.log(err);
       }
     });

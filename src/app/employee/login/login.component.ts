@@ -73,6 +73,8 @@ export class LoginComponent implements OnInit, OnDestroy {
         },
         error: (error) => {
           console.log(error);
+          let message = error.error.message as unknown as string
+          this.messageService.add({ severity: 'error', summary: message });
           this.isLoading = false;
         }
 
